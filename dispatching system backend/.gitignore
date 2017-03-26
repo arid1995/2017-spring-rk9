@@ -1,0 +1,10 @@
+### JAVA ###
+*.war
+*.jar
+*.class
+
+### Idea ###
+
+.idea
+*.iml
+target

@@ -1,0 +1,4 @@
+CREATE TABLE message_log (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    message VARCHAR(255)
+)
