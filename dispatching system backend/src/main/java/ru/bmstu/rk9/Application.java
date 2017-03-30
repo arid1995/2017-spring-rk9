@@ -1,12 +1,22 @@
 package ru.bmstu.rk9;
 
-import org.flywaydb.core.Flyway;
+import org.apache.catalina.Context;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jndi.JndiObjectFactoryBean;
 import ru.bmstu.rk9.database.Credentials;
 import ru.bmstu.rk9.database.Database;
+
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * Created by farid on 3/24/17.
@@ -29,9 +39,5 @@ public class Application extends SpringBootServletInitializer {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(Database.dataSource);
-        flyway.migrate();
     }
 }

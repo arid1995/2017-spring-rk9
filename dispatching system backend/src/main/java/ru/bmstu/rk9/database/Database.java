@@ -1,7 +1,14 @@
 package ru.bmstu.rk9.database;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.jndi.JndiObjectFactoryBean;
 
+import javax.annotation.Resource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,10 +20,24 @@ import java.sql.Statement;
  */
 @SuppressWarnings("Duplicates")
 public class Database {
+    //Uncomment when deploying
+    /*BEGIN*/
+    private static DataSource dataSource;
 
-    public static final ComboPooledDataSource dataSource;
-    //private static BasicDataSource dataSource;
+    static {
+        try {
+            InitialContext ctx = new InitialContext();
+            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/DefaultDB");
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        }
+    }
+    /*END*/
 
+    //Comment when deploying
+    /*BEGIN*/
+    /*
+    private static final ComboPooledDataSource dataSource;
 
     static {
         dataSource = new ComboPooledDataSource();
@@ -32,6 +53,8 @@ public class Database {
         dataSource.setAcquireIncrement(3);
         dataSource.setMaxPoolSize(20);
     }
+    */
+    /*END*/
 
     public static <T> T select(String query, TResultCallback<T> callback) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
@@ -59,11 +82,8 @@ public class Database {
     public static int update(String query) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-                try(ResultSet result = statement.getGeneratedKeys()) {
-                    if(result.next()) return result.getInt(1);
-                    return 0;
-                }
+                statement.executeUpdate(query);
+                return 0;
             }
         }
     }
