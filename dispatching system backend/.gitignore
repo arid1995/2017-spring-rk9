@@ -1,6 +1,5 @@
 ### JAVA ###
 *.war
-*.jar
 *.class
 
 ### Idea ###

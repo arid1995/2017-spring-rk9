@@ -22,6 +22,12 @@
         <m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>bmstu-repo</id>
+            <url>file://${basedir}/bmstu-repo</url>
+        </repository>
+    </repositories>
 
     <dependencies>
     <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
