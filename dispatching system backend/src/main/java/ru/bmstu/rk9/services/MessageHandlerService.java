@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 @Service
 public class MessageHandlerService {
-    public void pushToDevice(String device, String messageType, ArrayList<? extends Message> messages) {
+    public void pushToDevice(String device, String messageType, Message... messages) {
         MessagePushRequest messagePushRequest = new MessagePushRequest(messageType);
         messagePushRequest.push(device, messages);
     }

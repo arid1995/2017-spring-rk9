@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bmstu.rk9.Devices;
 import ru.bmstu.rk9.messages.fromdevice.BuiltInMessageRequest;
+import ru.bmstu.rk9.messages.todevice.SBuiltInMessage;
+import ru.bmstu.rk9.messages.todevice.SMessageTypes;
 import ru.bmstu.rk9.services.MessageHandlerService;
 import ru.bmstu.rk9.dao.TrackerDAO;
 import ru.bmstu.rk9.database.Database;
 
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,8 +76,11 @@ public class DispatchController {
             return ResponseEntity.status(500).body("Oops");
         }
 
-        messageHandlerService.pushToDevice(Devices.getDeviceId("default"), requestBody.getMessageType(),
-                requestBody.getMessages());
+        SBuiltInMessage message = new SBuiltInMessage(Long.toString((new Random()).nextLong()),
+                Float.toString((new Random()).nextFloat()));
+
+        messageHandlerService.pushToDevice(Devices.getDeviceId("default"), SMessageTypes.BUILT_IN_PUSH_TYPE,
+                message);
 
         return ResponseEntity.ok().body("Ok");
     }

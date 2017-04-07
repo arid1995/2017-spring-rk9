@@ -9,6 +9,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import ru.bmstu.rk9.messages.Message;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,20 +30,13 @@ public class MessagePushRequest {
         this.messageType = messageType;
     }
 
-    private String toJson() {
-        try {
-            String st = mapper.writeValueAsString(this);
-            return st;
-        } catch (JsonProcessingException ex) {
-            Logger log = Logger.getLogger(Logger.class.getName());
-            log.log(Level.WARNING, ex.getMessage());
-            return "err";
-        }
+    private String toJson() throws JsonProcessingException{
+        return mapper.writeValueAsString(this);
     }
 
-    public void push(String device, ArrayList<? extends Message> messages) {
+    public void push(String device, Message... messages) {
         try {
-            this.messages = messages;
+            this.messages = new ArrayList<>(Arrays.asList(messages));
             HttpResponse<JsonNode> jsonResponse =
                     Unirest.post("https://iotmmsp1942516588trial.hanatrial.ondemand.com/com.sap.iotservices.mms/v1/api/http/push/" + device)
                     .basicAuth("arid1995@mail.ru", "Tank1995")
@@ -51,8 +45,8 @@ public class MessagePushRequest {
                     .asJson();
 
             System.out.println(jsonResponse.getBody().toString());
-        } catch (UnirestException ex) {
-            ex.printStackTrace();
+        } catch (UnirestException | JsonProcessingException ex) {
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage());
         }
     }
 

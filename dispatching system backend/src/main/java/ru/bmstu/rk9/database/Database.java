@@ -20,39 +20,7 @@ import java.sql.Statement;
  */
 @SuppressWarnings("Duplicates")
 public class Database {
-    //Uncomment when deploying
-    /*BEGIN*/
-    /*private static DataSource dataSource;
-
-    static {
-        try {
-            InitialContext ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/DefaultDB");
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        }
-    }*/
-    /*END*/
-
-    //Comment when deploying
-    /*BEGIN*/
-    private static final ComboPooledDataSource dataSource;
-
-    static {
-        dataSource = new ComboPooledDataSource();
-        try {
-            dataSource.setDriverClass("com.sap.db.jdbc.Driver");
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        dataSource.setJdbcUrl(Credentials.HOST);
-        dataSource.setUser(Credentials.USER);
-        dataSource.setPassword(Credentials.PASSWORD);
-        dataSource.setAcquireRetryAttempts(0);
-        dataSource.setAcquireIncrement(3);
-        dataSource.setMaxPoolSize(20);
-    }
-    /*END*/
+    private static DatasourceAdapter dataSource = new DatasourceAdapter();
 
     public static <T> T select(String query, TResultCallback<T> callback) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
