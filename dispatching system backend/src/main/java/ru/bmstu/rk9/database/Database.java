@@ -22,7 +22,7 @@ import java.sql.Statement;
 public class Database {
     //Uncomment when deploying
     /*BEGIN*/
-    private static DataSource dataSource;
+    /*private static DataSource dataSource;
 
     static {
         try {
@@ -31,11 +31,11 @@ public class Database {
         } catch (NamingException ex) {
             ex.printStackTrace();
         }
-    }
+    }*/
     /*END*/
 
     //Comment when deploying
-    /*BEGIN*//*
+    /*BEGIN*/
     private static final ComboPooledDataSource dataSource;
 
     static {
@@ -51,7 +51,7 @@ public class Database {
         dataSource.setAcquireRetryAttempts(0);
         dataSource.setAcquireIncrement(3);
         dataSource.setMaxPoolSize(20);
-    }*/
+    }
     /*END*/
 
     public static <T> T select(String query, TResultCallback<T> callback) throws SQLException {

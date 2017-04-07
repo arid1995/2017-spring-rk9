@@ -1,20 +1,21 @@
 package ru.bmstu.rk9.controllers;
 
-import com.mashape.unirest.http.Unirest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.bmstu.rk9.Devices;
+import ru.bmstu.rk9.messages.fromdevice.BuiltInMessageRequest;
+import ru.bmstu.rk9.services.MessageHandlerService;
+import ru.bmstu.rk9.dao.TrackerDAO;
 import ru.bmstu.rk9.database.Database;
-import ru.bmstu.rk9.models.BuiltInMessage;
-import ru.bmstu.rk9.models.Message;
-import ru.bmstu.rk9.models.MessagePushRequest;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by farid on 3/24/17.
@@ -22,6 +23,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class DispatchController {
     private final AtomicLong counter = new AtomicLong(0);
+
+    private final MessageHandlerService messageHandlerService;
+
+    @Autowired
+    public DispatchController(MessageHandlerService messageHandlerService) {
+        this.messageHandlerService = messageHandlerService;
+    }
+
     @RequestMapping(path = "/api/dispatch/request", method = RequestMethod.GET)
     public ResponseEntity dispatch() {
         return ResponseEntity.ok().body(counter);
@@ -51,25 +60,21 @@ public class DispatchController {
         }
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.POST)
-    public ResponseEntity testForwarding() {
+    @RequestMapping(path = "/api/dispatch/default", method = RequestMethod.POST)
+    public ResponseEntity handleDefaultMessage(@RequestBody BuiltInMessageRequest requestBody) {
         counter.incrementAndGet();
 
         try {
-            Database.update("INSERT INTO tracker (created, device) VALUES (" +
-                    "'" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
-                        .format(new Date(Instant.now().toEpochMilli())) + "'" +
-                    ", 'd000-e000-v000-i000-c000-e001'" +
-                    ");");
+            TrackerDAO trackerDAO = new TrackerDAO(Devices.getDeviceId("default"), "ok");
+            trackerDAO.persist();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger log = Logger.getLogger(Logger.class.getName());
+            log.log(Level.WARNING, ex.getMessage());
             return ResponseEntity.status(500).body("Oops");
         }
 
-        Message message = new BuiltInMessage("228", "plus");
-
-        MessagePushRequest messagePushRequest = new MessagePushRequest("m0t0y0p0e3");
-        messagePushRequest.push("d000-e000-v000-i000-c000-e001", message);
+        messageHandlerService.pushToDevice(Devices.getDeviceId("default"), requestBody.getMessageType(),
+                requestBody.getMessages());
 
         return ResponseEntity.ok().body("Ok");
     }
