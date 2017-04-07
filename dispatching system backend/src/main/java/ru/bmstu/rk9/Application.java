@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import ru.bmstu.rk9.database.Credentials;
 import ru.bmstu.rk9.database.Database;
+import ru.bmstu.rk9.database.TableManager;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -39,5 +40,8 @@ public class Application extends SpringBootServletInitializer {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        TableManager tableManager = new TableManager();
+        tableManager.createTables();
     }
 }

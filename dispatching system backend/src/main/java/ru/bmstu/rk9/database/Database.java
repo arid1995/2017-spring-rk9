@@ -35,8 +35,7 @@ public class Database {
     /*END*/
 
     //Comment when deploying
-    /*BEGIN*/
-    /*
+    /*BEGIN*//*
     private static final ComboPooledDataSource dataSource;
 
     static {
@@ -52,8 +51,7 @@ public class Database {
         dataSource.setAcquireRetryAttempts(0);
         dataSource.setAcquireIncrement(3);
         dataSource.setMaxPoolSize(20);
-    }
-    */
+    }*/
     /*END*/
 
     public static <T> T select(String query, TResultCallback<T> callback) throws SQLException {
@@ -79,11 +77,10 @@ public class Database {
     }
 
     //update allows UPDATE, DELETE and INSERT queries
-    public static int update(String query) throws SQLException {
+    public static void update(String query) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(query);
-                return 0;
             }
         }
     }
