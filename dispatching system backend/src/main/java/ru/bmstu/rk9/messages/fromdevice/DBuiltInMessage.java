@@ -10,12 +10,12 @@ import ru.bmstu.rk9.messages.Message;
 public class DBuiltInMessage extends Message {
     private String sensor;
     private String value;
-    private long timestamp;
+    private String timestamp;
 
     public DBuiltInMessage() {
     }
 
-    public DBuiltInMessage(String sensor, String value, long timestamp) {
+    public DBuiltInMessage(String sensor, String value, String timestamp) {
         this.sensor = sensor;
         this.value = value;
         this.timestamp = timestamp;
@@ -29,7 +29,7 @@ public class DBuiltInMessage extends Message {
         return value;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
@@ -41,7 +41,7 @@ public class DBuiltInMessage extends Message {
         this.value = value;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 /**
  * Created by farid on 4/7/17.
  */
-public abstract class IncomingRequest<T> {
-    protected String mode;
-    protected String messageType;
-    protected ArrayList<T> messages;
+public class IncomingRequest<T> {
+    private String mode;
+    private String messageType;
+    private ArrayList<T> messages;
 
     public String getMode() {
         return mode;

@@ -41,7 +41,7 @@ public class Application extends SpringBootServletInitializer {
             e.printStackTrace();
         }
 
-        TableManager tableManager = new TableManager();
-        tableManager.createTables();
+        Initializer initializer = new Initializer();
+        initializer.initialize();
     }
 }
