@@ -13,6 +13,7 @@ import ru.bmstu.rk9.messages.todevice.SBuiltInMessage;
 import ru.bmstu.rk9.messages.todevice.SMessageTypes;
 import ru.bmstu.rk9.services.MessageHandlerService;
 import ru.bmstu.rk9.dao.TrackerDAO;
+import ru.bmstu.rk9.services.TaskTracker;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -28,10 +29,12 @@ public class DispatchController {
     private final AtomicLong counter = new AtomicLong(0);
 
     private final MessageHandlerService messageHandlerService;
+    private final TaskTracker taskTracker;
 
     @Autowired
-    public DispatchController(MessageHandlerService messageHandlerService) {
+    public DispatchController(MessageHandlerService messageHandlerService, TaskTracker taskTracker) {
         this.messageHandlerService = messageHandlerService;
+        this.taskTracker = taskTracker;
     }
 
     @RequestMapping(path = "/api/dispatch/request", method = RequestMethod.POST)
@@ -59,5 +62,15 @@ public class DispatchController {
                 message);
 
         return ResponseEntity.ok().body("Ok");
+    }
+
+    @RequestMapping(path = "/api/dispatch/starttask", method = RequestMethod.POST)
+    public ResponseEntity startTask(@RequestBody ProductionTask task) {
+        return ResponseEntity.ok().body("Task accepted");
+    }
+
+    @RequestMapping(path = "/api/dispatch/shutdown", method = RequestMethod.DELETE)
+    public void shutDown() {
+        System.exit(0);
     }
 }

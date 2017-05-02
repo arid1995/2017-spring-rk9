@@ -28,12 +28,13 @@ public class TableManager {
                     "machine_2 TINYINT," +
                     "robot_1 TINYINT," +
                     "robot_2 TINYINT," +
-                    "stacker_1 TINYINT," +
-                    "stacker_2 TINYINT," +
+                    "stacker TINYINT," +
                     "key_1 TINYINT," +
                     "key_2 TINYINT," +
+                    "key_3 TINYINT," +
+                    "key_4 TINYINT," +
                     "collet_1 TINYINT," +
-                    "collet_2 TINYINT" +
+                    "collet_2 TINYINT," +
                     "PRIMARY KEY (id)" +
                     ");");
         } catch (SQLException ex) {
