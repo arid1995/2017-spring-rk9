@@ -18,7 +18,7 @@ public class TableManager {
                     "PRIMARY KEY (id)" +
                     ");");
         } catch (SQLException ex) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage());
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
         }
         try {
             Database.update("CREATE COLUMN TABLE state_logger (" +
@@ -38,7 +38,7 @@ public class TableManager {
                     "PRIMARY KEY (id)" +
                     ");");
         } catch (SQLException ex) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage());
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
         }
     }
 }

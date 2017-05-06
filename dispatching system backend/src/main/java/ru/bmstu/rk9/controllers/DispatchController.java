@@ -51,7 +51,7 @@ public class DispatchController {
             trackerDAO.persist();
         } catch (SQLException ex) {
             Logger log = Logger.getLogger(Logger.class.getName());
-            log.log(Level.WARNING, ex.getMessage());
+            log.log(Level.WARNING, ex.getMessage(), ex);
             return ResponseEntity.status(500).body("Oops");
         }
 

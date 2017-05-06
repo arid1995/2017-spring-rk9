@@ -46,7 +46,7 @@ public class MessagePushRequest {
 
             System.out.println(jsonResponse.getBody().toString());
         } catch (UnirestException | JsonProcessingException ex) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage());
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
         }
     }
 

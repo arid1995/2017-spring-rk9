@@ -35,7 +35,7 @@ public class SystemStateService {
         try {
             currentState.persist();
         } catch (SQLException e) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage());
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
         }
     }
 
@@ -45,7 +45,7 @@ public class SystemStateService {
         try {
             currentState.loadLast();
         } catch (SQLException e) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage());
+            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
         }
     }
 }
