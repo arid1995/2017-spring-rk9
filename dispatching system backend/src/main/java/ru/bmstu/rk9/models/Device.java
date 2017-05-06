@@ -9,5 +9,4 @@ public abstract class Device {
     public void sendMessageToDevice() {
 
     }
-
 }

@@ -1,6 +1,6 @@
-package ru.bmstu.rk9.messages.todevice;
+package ru.bmstu.rk9.messages_deprecated.todevice;
 
-import ru.bmstu.rk9.messages.Message;
+import ru.bmstu.rk9.messages_deprecated.Message;
 
 /**
  * Created by farid on 4/7/17.

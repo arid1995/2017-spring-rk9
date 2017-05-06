@@ -1,4 +1,4 @@
-package ru.bmstu.rk9.messages.todevice;
+package ru.bmstu.rk9.messages_deprecated.todevice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import ru.bmstu.rk9.messages.Message;
+import ru.bmstu.rk9.messages_deprecated.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;

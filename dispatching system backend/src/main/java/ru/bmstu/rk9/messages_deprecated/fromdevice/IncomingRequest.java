@@ -1,4 +1,4 @@
-package ru.bmstu.rk9.messages.fromdevice;
+package ru.bmstu.rk9.messages_deprecated.fromdevice;
 
 import java.util.ArrayList;
 
