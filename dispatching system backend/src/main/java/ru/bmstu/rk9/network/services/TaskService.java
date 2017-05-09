@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.network.services;
 
 import org.springframework.stereotype.Service;
+import ru.bmstu.rk9.mechanics.schedule.Dispatcher;
 import ru.bmstu.rk9.network.entities.ProductionTask;
 
 import java.util.PriorityQueue;
@@ -10,13 +11,13 @@ import java.util.PriorityQueue;
  */
 @Service
 public class TaskService {
-    private PriorityQueue<ProductionTask> tasks = new PriorityQueue<>();
+    private Dispatcher dispatcher = new Dispatcher();
 
     public void addTask(ProductionTask task) {
-        tasks.add(task);
+        dispatcher.addTask(task);
     }
 
-    public ProductionTask pollTask() {
-        return tasks.poll();
+    public PriorityQueue<ProductionTask> getTaskQueue() {
+        return dispatcher.getTasks();
     }
 }
