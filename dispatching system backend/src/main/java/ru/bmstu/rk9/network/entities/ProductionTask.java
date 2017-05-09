@@ -10,41 +10,30 @@ import java.util.ArrayList;
 public class ProductionTask implements Comparable<ProductionTask> {
     @NotNull
     @Min(1)
-    private Integer detailCount;
+    private Integer amount;
 
     @NotNull
-    private Integer processId;
-
-    @NotNull
-    private ArrayList<Integer> machineSequence;
+    private Integer detailTypeId;
     private Integer priority;
 
-    public Integer getDetailCount() {
-        return detailCount;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public Integer getProcessId() {
-        return processId;
-    }
-
-    public ArrayList<Integer> getMachineSequence() {
-        return machineSequence;
+    public Integer getDetailTypeId() {
+        return detailTypeId;
     }
 
     public Integer getPriority() {
         return priority;
     }
 
-    public void setDetailCount(Integer detailCount) {
-        this.detailCount = detailCount;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
-    public void setProcessId(Integer processId) {
-        this.processId = processId;
-    }
-
-    public void setMachineSequence(ArrayList<Integer> machineSequence) {
-        this.machineSequence = machineSequence;
+    public void setDetailTypeId(Integer detailTypeId) {
+        this.detailTypeId = detailTypeId;
     }
 
     public void setPriority(Integer priority) {

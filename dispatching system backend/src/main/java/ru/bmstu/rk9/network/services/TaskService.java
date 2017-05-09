@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
  */
 @Service
 public class TaskService {
-    private Dispatcher dispatcher = new Dispatcher();
+    private Dispatcher dispatcher = new Dispatcher(2);
 
     public void addTask(ProductionTask task) {
         dispatcher.addTask(task);

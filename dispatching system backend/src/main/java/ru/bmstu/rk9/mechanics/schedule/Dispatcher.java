@@ -33,6 +33,12 @@ public class Dispatcher {
 
     public void addTask(ProductionTask task) {
         tasks.add(task);
+
+        if (isWorking)
+            return;
+
+        isWorking = true;
+        start();
     }
 
     public PriorityQueue<ProductionTask> getTasks() {
@@ -40,7 +46,6 @@ public class Dispatcher {
     }
 
     public void start() {
-        if (isWorking)
-            return;
+
     }
 }
