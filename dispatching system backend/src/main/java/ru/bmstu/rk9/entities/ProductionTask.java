@@ -1,13 +1,21 @@
 package ru.bmstu.rk9.entities;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 /**
  * Created by farid on 5/2/17.
  */
 public class ProductionTask implements Comparable<ProductionTask> {
+    @NotNull
+    @Min(1)
     private Integer detailCount;
+
+    @NotNull
     private Integer processId;
+
+    @NotNull
     private ArrayList<Integer> machineSequence;
     private Integer priority;
 

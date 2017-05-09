@@ -13,12 +13,12 @@ public class Pallet {
     private int currentCount;
     private HashMap<Integer, Billet> billets;
 
-    public Pallet(int capacity) {
+    public Pallet(int capacity, int technicalProcessId) {
         billets = new HashMap<>();
 
         this.capacity = capacity > 0 ? capacity : 0;
         for (int i = 0; i < capacity; i++) {
-            billets.put(i, new Billet());
+            billets.put(i, new Billet(technicalProcessId));
         }
 
         currentCount = capacity;
