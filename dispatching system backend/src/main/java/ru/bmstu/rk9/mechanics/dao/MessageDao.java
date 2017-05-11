@@ -8,11 +8,11 @@ import java.sql.SQLException;
 /**
  * Created by farid on 4/7/17.
  */
-public class TrackerDAO implements Dao {
+public class MessageDao implements Dao {
     private String device;
     private String state;
 
-    public TrackerDAO(String device, String state) {
+    public MessageDao(String device, String state) {
         this.device = device;
         this.state = state;
     }

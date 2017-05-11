@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 /**
  * Created by farid on 4/21/17.
  */
-public class SystemStateDAO implements Dao {
+public class StateLogDao implements Dao {
     private byte machine1;
     private byte machine2;
     private byte robot1;

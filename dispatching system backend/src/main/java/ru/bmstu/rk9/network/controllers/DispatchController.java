@@ -14,7 +14,7 @@ import ru.bmstu.rk9.messages_deprecated.fromdevice.IncomingRequest;
 import ru.bmstu.rk9.messages_deprecated.todevice.SBuiltInMessage;
 import ru.bmstu.rk9.messages_deprecated.todevice.SMessageTypes;
 import ru.bmstu.rk9.network.services.MessageHandlerService;
-import ru.bmstu.rk9.mechanics.dao.TrackerDAO;
+import ru.bmstu.rk9.mechanics.dao.MessageDao;
 import ru.bmstu.rk9.network.services.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,8 +64,8 @@ public class DispatchController extends Controller {
         counter.incrementAndGet();
 
         try {
-            TrackerDAO trackerDAO = new TrackerDAO(Devices.getDeviceId("default"), "ok");
-            trackerDAO.persist();
+            MessageDao messageDao = new MessageDao(Devices.getDeviceId("default"), "ok");
+            messageDao.persist();
         } catch (SQLException ex) {
             Logger log = Logger.getLogger(Logger.class.getName());
             log.log(Level.WARNING, ex.getMessage(), ex);

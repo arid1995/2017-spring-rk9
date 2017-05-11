@@ -6,7 +6,7 @@
 
     <groupId>ru.bmstu.rk9</groupId>
     <artifactId>dispatching-system</artifactId>
-    <version>0.0</version>
+    <version>0.2</version>
     <packaging>war</packaging>
 
     <parent>
