@@ -1,31 +1,21 @@
 package ru.bmstu.rk9.mechanics.dao;
 
+import java.util.ArrayList;
 import ru.bmstu.rk9.database.Database;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import ru.bmstu.rk9.mechanics.models.SystemState;
 
 /**
  * Created by farid on 4/21/17.
  */
-public class StateLogDao implements Dao {
-    private byte machine1;
-    private byte machine2;
-    private byte robot1;
-    private byte robot2;
-    private byte stacker;
-    private byte key1;
-    private byte key2;
-    private byte key3;
-    private byte key4;
-    private byte collet1;
-    private byte collet2;
-    private Timestamp created;
+public class SystemStateDao implements Dao <SystemState> {
 
     @Override
-    public void persist() throws SQLException {
+    public void persist(SystemState state) throws SQLException {
         StringBuilder query = new StringBuilder();
-        created = new Timestamp(System.currentTimeMillis());
+        Timestamp created = new Timestamp(System.currentTimeMillis());
         query.append("INSERT INTO statelogger (machine_1, machine_2, robot_1, robot_2, stacker,")
                 .append("key_1, key_2, key_3, key_4, collet_1, collet_2, created) VALUES(")
                 .append(machine1).append(',')
@@ -40,12 +30,11 @@ public class StateLogDao implements Dao {
                 .append(collet1).append(',')
                 .append(collet2).append(',')
                 .append(created.getTime()).append(")");
-
         Database.update(query.toString());
     }
 
     @Override
-    public void loadLast() throws SQLException {
+    public void getLast() throws SQLException {
 
         Database.select("SELECT TOP 1 * FROM statelogger ORDER BY id DESC", (result) -> {
             machine1 = result.getByte("machine_1");

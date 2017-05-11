@@ -43,7 +43,7 @@ public class MessageDao implements Dao {
         }
     }
 
-    public void loadLast() {
+    public void getLast() {
 
     }
 }

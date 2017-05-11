@@ -1,7 +1,7 @@
 package ru.bmstu.rk9.network.services;
 
 import org.springframework.stereotype.Service;
-import ru.bmstu.rk9.mechanics.dao.StateLogDao;
+import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
 import ru.bmstu.rk9.mechanics.models.*;
 
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 @Service
 public class SystemStateService {
-    private StateLogDao currentState;
+    private SystemStateDao currentState;
     private Conveyor conveyor;
     private Machine machine1;
     private Machine machine2;
@@ -22,7 +22,7 @@ public class SystemStateService {
     private Stacker stacker;
     private Stock stock;
 
-    public StateLogDao getCurrentState() {
+    public SystemStateDao getCurrentState() {
         if (currentState == null) {
             loadLastSystemState();
         }
@@ -30,7 +30,7 @@ public class SystemStateService {
         return currentState;
     }
 
-    public void setCurrentState(StateLogDao currentState) {
+    public void setCurrentState(SystemStateDao currentState) {
         this.currentState = currentState;
         try {
             currentState.persist();
@@ -40,10 +40,10 @@ public class SystemStateService {
     }
 
     private void loadLastSystemState() {
-        currentState = new StateLogDao();
+        currentState = new SystemStateDao();
 
         try {
-            currentState.loadLast();
+            currentState.getLast();
         } catch (SQLException e) {
             Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
         }

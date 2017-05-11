@@ -6,7 +6,11 @@ import java.util.ArrayList;
  * Created by farid on 5/2/17.
  */
 public class Machine extends Device {
-    public ArrayList<Integer> technicalProcessIds = new ArrayList<>();
+    public static final String MILLING_TYPE = "Milling";
+    public static final String LATHE_TYPE = "Lathe";
+
+    private Integer machineId;
+    private ArrayList<Process> technicalProcesses = new ArrayList<>();
 
     public void startProcess(Billet billet) {
 
