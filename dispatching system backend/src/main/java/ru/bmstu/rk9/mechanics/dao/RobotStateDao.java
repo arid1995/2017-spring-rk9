@@ -29,7 +29,7 @@ public class RobotStateDao implements Dao<Robot> {
           String deviceName = result.getString("ddn");
           int robotState = result.getInt("rsrs");
 
-          Robot robot = new Robot(robotId, deviceId, deviceStringId, deviceName, robotState);
+          Robot robot = new Robot(deviceId, deviceStringId, deviceName, robotState, robotId);
           robots.add(robot);
         }
 
@@ -43,12 +43,25 @@ public class RobotStateDao implements Dao<Robot> {
   }
 
   @Override
-  public void persist(Robot object) {
-
+  public int persist(Robot robot) {
+    String query = "INSERT INTO robot_state (state_id, robot_id, robot_state) values("
+        + robot.getStateId() + ',' + robot.getRobotId() + ',' + robot.getState() + ')';
+    try {
+      Database.update(query);
+      return -1;
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
+      return -1;
+    }
   }
 
   @Override
   public Robot getLast() {
+    return null;
+  }
+
+  @Override
+  public ArrayList<Robot> getAll() {
     return null;
   }
 }

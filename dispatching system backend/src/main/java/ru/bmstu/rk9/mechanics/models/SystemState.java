@@ -7,15 +7,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by farid on 5/11/17.
  */
-public class SystemState extends DbModel {
-  private static AtomicInteger systemStateId;
+public class SystemState {
+  private Integer systemStateId;
   private Timestamp created;
   private Stacker stacker;
   private ArrayList<Robot> robotStates;
   private ArrayList<Machine> machineStates;
 
   public SystemState(int systemSateId, Timestamp created, Stacker stacker) {
-    SystemState.systemStateId.set(systemSateId);
+    this.systemStateId = systemSateId;
     this.created = created;
     this.stacker = stacker;
   }
@@ -50,16 +50,5 @@ public class SystemState extends DbModel {
 
   public void setMachineStates(ArrayList<Machine> machineStates) {
     this.machineStates = machineStates;
-  }
-
-
-  @Override
-  public int incrementAndGet() {
-    return systemStateId.incrementAndGet();
-  }
-
-  @Override
-  public int getModelId() {
-    return systemStateId.get();
   }
 }

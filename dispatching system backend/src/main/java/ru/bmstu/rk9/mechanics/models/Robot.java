@@ -9,13 +9,22 @@ public class Robot extends Device {
   private static AtomicInteger idGenerator = new AtomicInteger();
   private Integer robotId;
 
-  public Robot(Integer robotId, Integer deviceId, Integer state) {
-    super(deviceId, state);
+  public Robot(Integer deviceId, String deviceStringId, String deviceName, Integer robotId) {
+    super(deviceId, deviceStringId, deviceName);
+    this.robotId = robotId;
   }
 
-  public Robot(Integer robotId, Integer deviceId, String deviceStringId,
-      String deviceName, Integer state) {
+  public Robot(Integer deviceId, String deviceStringId, String deviceName, Integer state,
+      Integer robotId) {
     super(deviceId, deviceStringId, deviceName, state);
+    this.robotId = robotId;
+  }
+
+  public Integer getRobotId() {
+    return robotId;
+  }
+
+  public void setRobotId(Integer robotId) {
     this.robotId = robotId;
   }
 
@@ -25,15 +34,5 @@ public class Robot extends Device {
 
   public void takeBilletFromMachine(Billet billet) {
 
-  }
-
-  @Override
-  public int getDeviceId() {
-    return 0;
-  }
-
-  @Override
-  public int incrementAndGet() {
-    return 0;
   }
 }

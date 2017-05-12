@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by farid on 5/2/17.
  */
 public class Device {
-  private static AtomicInteger idGenerator = new AtomicInteger();
   protected Integer deviceId;
   protected String deviceUrl;
   protected String deviceStringId;
@@ -14,22 +13,16 @@ public class Device {
   protected Integer state;
   protected Integer stateId;
 
-  public Device(Integer deviceId, Integer state) {
-    this.state = state;
+  public Device(Integer deviceId, String deviceStringId, String deviceName) {
+    this.deviceId = deviceId;
+    this.deviceStringId = deviceStringId;
+    this.deviceName = deviceName;
   }
 
   public Device(Integer deviceId, String deviceStringId, String deviceName, Integer state) {
     this.deviceStringId = deviceStringId;
     this.deviceName = deviceName;
     this.state = state;
-  }
-
-  public int getDeviceId() {
-    return 0;
-  }
-
-  public int incrementAndGet() {
-    return 0;
   }
 
   public void sendMessageToDevice() {

@@ -25,25 +25,18 @@ public class Dispatcher {
 
   private final PriorityQueue<ProductionTask> tasks = new PriorityQueue<>();
   private boolean isWorking = false;
-  /*private final ArrayList<Machine> machines;
-  private final ArrayList<Robot> robots;
-  private final Conveyor conveyor;
-  private final Stacker stacker;
-  private final SystemState systemState;*/
+  //private final ArrayList<Machine> machines;
+  //private final ArrayList<Robot> robots;
+  //private final Conveyor conveyor;
+  //private final Stacker stacker;
+  //private final SystemState systemState;
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();
-  private final Dao<Machine> machineDao = new MachineDao();
-  private final Dao<Robot> robotDao = new RobotDao();
 
   public Dispatcher(int machineNumber) {
-    /*machines = machineDao.getAll();
-    robots = robotDao.getAll();
-    conveyor = new Conveyor();
-    stacker = new Stacker();
-
-    systemState = systemStateDao.getLast();
-    systemState.setMachineStates(machines);
-    systemState.setRobotStates(robots);*/
+    //systemState = systemStateDao.getLast();
+    //robots = systemState.getRobotStates();
+    //machines = systemState.getMachineStates();
   }
 
   public void addTask(ProductionTask task) {

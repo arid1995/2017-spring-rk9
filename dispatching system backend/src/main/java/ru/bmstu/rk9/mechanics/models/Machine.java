@@ -10,14 +10,14 @@ public class Machine extends Device {
   public static final String MILLING_TYPE = "Milling";
   public static final String LATHE_TYPE = "Lathe";
 
-  private static AtomicInteger idGenerator;
   private Integer machineId;
   private String machineType;
   private ArrayList<Process> technicalProcesses = new ArrayList<>();
 
-  public Machine(Integer deviceId, Integer state, Integer machineId, String machineType,
+  public Machine(Integer deviceId, String deviceStringId, String deviceName,
+      Integer machineId, String machineType,
       ArrayList<Process> technicalProcesses) {
-    super(deviceId, state);
+    super(deviceId, deviceStringId, deviceName);
     this.machineId = machineId;
     this.machineType = machineType;
     this.technicalProcesses = technicalProcesses;
@@ -30,6 +30,18 @@ public class Machine extends Device {
     this.machineId = machineId;
     this.machineType = machineType;
     this.technicalProcesses = technicalProcesses;
+  }
+
+  public Integer getMachineId() {
+    return machineId;
+  }
+
+  public String getMachineType() {
+    return machineType;
+  }
+
+  public ArrayList<Process> getTechnicalProcesses() {
+    return technicalProcesses;
   }
 
   public void startProcess(Billet billet) {

@@ -6,7 +6,7 @@ package ru.bmstu.rk9.mechanics.models;
 public class Stacker extends Device {
 
   public Stacker(Integer deviceId, Integer state) {
-    super(deviceId, state);
+    super(deviceId, "saf", "asf");
   }
 
   public void putPalletOnConveyor(Billet billet) {

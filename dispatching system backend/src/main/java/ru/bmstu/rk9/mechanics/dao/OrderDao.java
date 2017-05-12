@@ -1,5 +1,6 @@
 package ru.bmstu.rk9.mechanics.dao;
 
+import java.util.ArrayList;
 import ru.bmstu.rk9.mechanics.models.Order;
 
 /**
@@ -8,12 +9,17 @@ import ru.bmstu.rk9.mechanics.models.Order;
 public class OrderDao implements Dao<Order> {
 
   @Override
-  public void persist(Order object) {
-
+  public int persist(Order object) {
+    return 0;
   }
 
   @Override
   public Order getLast() {
+    return null;
+  }
+
+  @Override
+  public ArrayList<Order> getAll() {
     return null;
   }
 }

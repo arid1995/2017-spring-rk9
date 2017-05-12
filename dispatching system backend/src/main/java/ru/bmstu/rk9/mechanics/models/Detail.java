@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by farid on 5/11/17.
  */
-public class Detail extends DbModel {
+public class Detail {
 
   private Integer detailId;
   private String name;
@@ -32,15 +32,5 @@ public class Detail extends DbModel {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  @Override
-  public int incrementAndGet() {
-    return 0;
-  }
-
-  @Override
-  public int getModelId() {
-    return 0;
   }
 }

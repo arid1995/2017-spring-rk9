@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.mechanics.dao;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
@@ -16,21 +17,24 @@ import ru.bmstu.rk9.mechanics.models.SystemState;
  * Created by farid on 4/21/17.
  */
 public class SystemStateDao implements Dao<SystemState> {
+  private static AtomicInteger idGenerator = new AtomicInteger(-1);
 
   @Override
-  public void persist(SystemState state) {
+  public int persist(SystemState state) {
     StringBuilder query = new StringBuilder();
     Timestamp created = new Timestamp(System.currentTimeMillis());
-    int newId = state.incrementAndGet();
+    int newId;
 
-    query.append("INSERT INTO state_log (id, created, stacker_state) VALUES(")
-        .append(newId).append(",")
-        .append(created.getTime()).append(",")
-        .append(state.getStacker().getState()).append(")");
     try {
+      newId = Utils.getNextId("state_log", "state_id", idGenerator);
+      query.append("INSERT INTO state_log (state_id, created, stacker_state) VALUES(")
+          .append(newId).append(",")
+          .append(created.getTime()).append(",")
+          .append(state.getStacker().getState()).append(")");
       Database.update(query.toString());
     } catch (SQLException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+      return -1;
     }
 
     RobotStateDao robotStateDao = new RobotStateDao();
@@ -44,13 +48,14 @@ public class SystemStateDao implements Dao<SystemState> {
       machineStateDao.persist(machine);
       machine.setStateId(newId);
     }
+    return newId;
   }
 
   @Override
   public SystemState getLast() {
     try {
       return Database.select("SELECT TOP 1 * FROM state_log ORDER BY id DESC", (result) -> {
-        result.next();
+        if (!result.next()) return null;
         int stateId = result.getInt("id");
         Timestamp created = result.getTimestamp("created");
         int stackerState = result.getInt("stacker_state");
@@ -68,6 +73,11 @@ public class SystemStateDao implements Dao<SystemState> {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
     }
 
+    return null;
+  }
+
+  @Override
+  public ArrayList<SystemState> getAll() {
     return null;
   }
 }

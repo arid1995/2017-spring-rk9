@@ -30,18 +30,7 @@ public class MachineStateDao implements Dao<Machine> {
           String deviceName = result.getString("ddn");
           int machineState = result.getInt("msms");
 
-          ArrayList<Process> processes = Database.select("SELECT * FROM process WHERE"
-              + " process.machine_id=" + machineId, (procResult) -> {
-            ArrayList<Process> processes1 = new ArrayList<>();
-            while (procResult.next()) {
-              String programName = procResult.getString("program_name");
-              int processId = procResult.getInt("process_id");
-
-              Process process = new Process(programName, processId);
-              processes1.add(process);
-            }
-            return processes1;
-          });
+          ArrayList<Process> processes = new ProcessDao().getMachineProcesses(machineId);
 
           Machine machine = new Machine(deviceId, deviceStringId, deviceName, machineState,
               machineId, machineType, processes
@@ -59,12 +48,24 @@ public class MachineStateDao implements Dao<Machine> {
   }
 
   @Override
-  public void persist(Machine object) {
-
+  public int persist(Machine machine) {
+    String query = "INSERT INTO machine_state (state_id, machine_id, machine_state) values("
+        + machine.getStateId() + ',' + machine.getMachineId() + ',' + machine.getState() + ')';
+    try {
+      Database.update(query);
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
+    }
+    return -1;
   }
 
   @Override
   public Machine getLast() {
+    return null;
+  }
+
+  @Override
+  public ArrayList<Machine> getAll() {
     return null;
   }
 }

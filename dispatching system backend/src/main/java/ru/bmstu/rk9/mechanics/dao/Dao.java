@@ -7,9 +7,10 @@ import java.util.ArrayList;
  * Created by farid on 4/7/17.
  */
 public interface Dao <T> {
-    void persist(T object);
+    int persist(T object);
     //void update(T object);
     T getLast();
     //ArrayList<T> getLast(int count);
-    //ArrayList<T> getAll();
+    ArrayList<T> getAll();
+    default void delete(T object) {}
 }

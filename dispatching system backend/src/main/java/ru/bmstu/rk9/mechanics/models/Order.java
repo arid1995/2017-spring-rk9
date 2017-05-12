@@ -3,7 +3,7 @@ package ru.bmstu.rk9.mechanics.models;
 /**
  * Created by farid on 5/11/17.
  */
-public class Order extends DbModel {
+public class Order {
   private Integer orderId;
   private Detail detail;
   private Integer amount;
@@ -31,15 +31,5 @@ public class Order extends DbModel {
 
   public void setAmount(Integer amount) {
     this.amount = amount;
-  }
-
-  @Override
-  public int incrementAndGet() {
-    return 0;
-  }
-
-  @Override
-  public int getModelId() {
-    return 0;
   }
 }
