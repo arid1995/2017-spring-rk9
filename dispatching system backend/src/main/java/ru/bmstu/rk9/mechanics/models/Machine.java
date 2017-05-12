@@ -1,26 +1,46 @@
 package ru.bmstu.rk9.mechanics.models;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by farid on 5/2/17.
  */
 public class Machine extends Device {
-    public static final String MILLING_TYPE = "Milling";
-    public static final String LATHE_TYPE = "Lathe";
+  public static final String MILLING_TYPE = "Milling";
+  public static final String LATHE_TYPE = "Lathe";
 
-    private Integer machineId;
-    private ArrayList<Process> technicalProcesses = new ArrayList<>();
+  private static AtomicInteger idGenerator;
+  private Integer machineId;
+  private String machineType;
+  private ArrayList<Process> technicalProcesses = new ArrayList<>();
 
-    public void startProcess(Billet billet) {
+  public Machine(Integer deviceId, Integer state, Integer machineId, String machineType,
+      ArrayList<Process> technicalProcesses) {
+    super(deviceId, state);
+    this.machineId = machineId;
+    this.machineType = machineType;
+    this.technicalProcesses = technicalProcesses;
+  }
 
-    }
+  public Machine(Integer deviceId, String deviceStringId, String deviceName, Integer state,
+      Integer machineId, String machineType,
+      ArrayList<Process> technicalProcesses) {
+    super(deviceId, deviceStringId, deviceName, state);
+    this.machineId = machineId;
+    this.machineType = machineType;
+    this.technicalProcesses = technicalProcesses;
+  }
 
-    private void openCollet() {
+  public void startProcess(Billet billet) {
 
-    }
+  }
 
-    private void closeCollet() {
+  private void openCollet() {
 
-    }
+  }
+
+  private void closeCollet() {
+
+  }
 }

@@ -2,28 +2,22 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by farid on 5/11/17.
  */
-public class SystemState {
-  private Integer stateId;
+public class SystemState extends DbModel {
+  private static AtomicInteger systemStateId;
   private Timestamp created;
   private Stacker stacker;
-  private ArrayList<Robot> robotState;
-  private ArrayList<Machine> machineState;
+  private ArrayList<Robot> robotStates;
+  private ArrayList<Machine> machineStates;
 
-  public SystemState(Timestamp created, Stacker stacker,
-      ArrayList<Robot> robotState,
-      ArrayList<Machine> machineState) {
+  public SystemState(int systemSateId, Timestamp created, Stacker stacker) {
+    SystemState.systemStateId.set(systemSateId);
     this.created = created;
     this.stacker = stacker;
-    this.robotState = robotState;
-    this.machineState = machineState;
-  }
-
-  public Integer getStateId() {
-    return stateId;
   }
 
   public Timestamp getCreated() {
@@ -34,12 +28,12 @@ public class SystemState {
     return stacker;
   }
 
-  public ArrayList<Robot> getRobotState() {
-    return robotState;
+  public ArrayList<Robot> getRobotStates() {
+    return robotStates;
   }
 
-  public ArrayList<Machine> getMachineState() {
-    return machineState;
+  public ArrayList<Machine> getMachineStates() {
+    return machineStates;
   }
 
   public void setCreated(Timestamp created) {
@@ -50,11 +44,22 @@ public class SystemState {
     this.stacker = stacker;
   }
 
-  public void setRobotState(ArrayList<Robot> robotState) {
-    this.robotState = robotState;
+  public void setRobotStates(ArrayList<Robot> robotStates) {
+    this.robotStates = robotStates;
   }
 
-  public void setMachineState(ArrayList<Machine> machineState) {
-    this.machineState = machineState;
+  public void setMachineStates(ArrayList<Machine> machineStates) {
+    this.machineStates = machineStates;
+  }
+
+
+  @Override
+  public int incrementAndGet() {
+    return systemStateId.incrementAndGet();
+  }
+
+  @Override
+  public int getModelId() {
+    return systemStateId.get();
   }
 }

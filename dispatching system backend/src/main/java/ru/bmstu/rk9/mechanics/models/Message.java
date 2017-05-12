@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by farid on 5/11/17.
  */
-public class Message {
+public class Message extends DbModel {
   private Integer messageId;
   private Timestamp created;
   private Integer status;
@@ -47,5 +47,15 @@ public class Message {
 
   public void setDeviceId(Integer deviceId) {
     this.deviceId = deviceId;
+  }
+
+  @Override
+  public int incrementAndGet() {
+    return 0;
+  }
+
+  @Override
+  public int getModelId() {
+    return 0;
   }
 }

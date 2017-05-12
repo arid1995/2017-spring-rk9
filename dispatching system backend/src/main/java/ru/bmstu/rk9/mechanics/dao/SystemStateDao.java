@@ -1,146 +1,73 @@
 package ru.bmstu.rk9.mechanics.dao;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import ru.bmstu.rk9.mechanics.models.Machine;
+import ru.bmstu.rk9.mechanics.models.Robot;
+import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.SystemState;
 
 /**
  * Created by farid on 4/21/17.
  */
-public class SystemStateDao implements Dao <SystemState> {
+public class SystemStateDao implements Dao<SystemState> {
 
-    @Override
-    public void persist(SystemState state) throws SQLException {
-        StringBuilder query = new StringBuilder();
-        Timestamp created = new Timestamp(System.currentTimeMillis());
-        query.append("INSERT INTO statelogger (machine_1, machine_2, robot_1, robot_2, stacker,")
-                .append("key_1, key_2, key_3, key_4, collet_1, collet_2, created) VALUES(")
-                .append(machine1).append(',')
-                .append(machine2).append(',')
-                .append(robot1).append(',')
-                .append(robot2).append(',')
-                .append(stacker).append(',')
-                .append(key1).append(',')
-                .append(key2).append(',')
-                .append(key3).append(',')
-                .append(key4).append(',')
-                .append(collet1).append(',')
-                .append(collet2).append(',')
-                .append(created.getTime()).append(")");
-        Database.update(query.toString());
+  @Override
+  public void persist(SystemState state) {
+    StringBuilder query = new StringBuilder();
+    Timestamp created = new Timestamp(System.currentTimeMillis());
+    int newId = state.incrementAndGet();
+
+    query.append("INSERT INTO state_log (id, created, stacker_state) VALUES(")
+        .append(newId).append(",")
+        .append(created.getTime()).append(",")
+        .append(state.getStacker().getState()).append(")");
+    try {
+      Database.update(query.toString());
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
     }
 
-    @Override
-    public void getLast() throws SQLException {
+    RobotStateDao robotStateDao = new RobotStateDao();
+    MachineStateDao machineStateDao = new MachineStateDao();
 
-        Database.select("SELECT TOP 1 * FROM statelogger ORDER BY id DESC", (result) -> {
-            machine1 = result.getByte("machine_1");
-            machine2 = result.getByte("machine_2");
-            robot1 = result.getByte("robot_1");
-            robot2 = result.getByte("robot_2");
-            stacker = result.getByte("stacker");
-            key1 = result.getByte("key_1");
-            key2 = result.getByte("key_2");
-            key3 = result.getByte("key_3");
-            key4 = result.getByte("key_4");
-            collet1 = result.getByte("collet_1");
-            collet2 = result.getByte("collet_2");
-            created = result.getTimestamp("created");
-        });
+    for (Robot robot : state.getRobotStates()) {
+      robotStateDao.persist(robot);
+      robot.setStateId(newId);
+    }
+    for (Machine machine : state.getMachineStates()) {
+      machineStateDao.persist(machine);
+      machine.setStateId(newId);
+    }
+  }
+
+  @Override
+  public SystemState getLast() {
+    try {
+      return Database.select("SELECT TOP 1 * FROM state_log ORDER BY id DESC", (result) -> {
+        result.next();
+        int stateId = result.getInt("id");
+        Timestamp created = result.getTimestamp("created");
+        int stackerState = result.getInt("stacker_state");
+        //TODO: decide what to do with the stacker
+        SystemState systemState = new SystemState(stateId, created, new Stacker(0, 0));
+
+        RobotStateDao robotStateDao = new RobotStateDao();
+        MachineStateDao machineStateDao = new MachineStateDao();
+        systemState.setRobotStates(robotStateDao.getByStateId(stateId));
+        systemState.setMachineStates(machineStateDao.getByStateId(stateId));
+
+        return systemState;
+      });
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
     }
 
-    public byte getMachine1() {
-        return machine1;
-    }
-
-    public byte getMachine2() {
-        return machine2;
-    }
-
-    public byte getRobot1() {
-        return robot1;
-    }
-
-    public byte getRobot2() {
-        return robot2;
-    }
-
-    public byte getStacker() {
-        return stacker;
-    }
-
-    public byte getKey1() {
-        return key1;
-    }
-
-    public byte getKey2() {
-        return key2;
-    }
-
-    public byte getKey3() {
-        return key3;
-    }
-
-    public byte getKey4() {
-        return key4;
-    }
-
-    public byte getCollet1() {
-        return collet1;
-    }
-
-    public byte getCollet2() {
-        return collet2;
-    }
-
-    public Timestamp getCreated() {
-        return created;
-    }
-
-    public void setMachine1(byte machine1) {
-        this.machine1 = machine1;
-    }
-
-    public void setMachine2(byte machine2) {
-        this.machine2 = machine2;
-    }
-
-    public void setRobot1(byte robot1) {
-        this.robot1 = robot1;
-    }
-
-    public void setRobot2(byte robot2) {
-        this.robot2 = robot2;
-    }
-
-    public void setStacker(byte stacker) {
-        this.stacker = stacker;
-    }
-
-    public void setKey1(byte key1) {
-        this.key1 = key1;
-    }
-
-    public void setKey2(byte key2) {
-        this.key2 = key2;
-    }
-
-    public void setKey3(byte key3) {
-        this.key3 = key3;
-    }
-
-    public void setKey4(byte key4) {
-        this.key4 = key4;
-    }
-
-    public void setCollet1(byte collet1) {
-        this.collet1 = collet1;
-    }
-
-    public void setCollet2(byte collet2) {
-        this.collet2 = collet2;
-    }
+    return null;
+  }
 }

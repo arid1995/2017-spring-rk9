@@ -1,24 +1,74 @@
 package ru.bmstu.rk9.mechanics.models;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by farid on 5/2/17.
  */
-public abstract class Device {
-    protected Integer deviceId;
-    protected String deviceUrl;
-    protected String deviceStringId;
-    protected String deviceName;
-    protected Integer state;
+public class Device {
+  private static AtomicInteger idGenerator = new AtomicInteger();
+  protected Integer deviceId;
+  protected String deviceUrl;
+  protected String deviceStringId;
+  protected String deviceName;
+  protected Integer state;
+  protected Integer stateId;
 
-    public Device(Integer state) {
-      this.state = state;
-    }
+  public Device(Integer deviceId, Integer state) {
+    this.state = state;
+  }
 
-    public Device(String deviceStringId, String deviceName, Integer state) {
+  public Device(Integer deviceId, String deviceStringId, String deviceName, Integer state) {
+    this.deviceStringId = deviceStringId;
+    this.deviceName = deviceName;
+    this.state = state;
+  }
 
-    }
+  public int getDeviceId() {
+    return 0;
+  }
 
-    public void sendMessageToDevice() {
+  public int incrementAndGet() {
+    return 0;
+  }
 
-    }
+  public void sendMessageToDevice() {
+
+  }
+
+  public String getDeviceStringId() {
+    return deviceStringId;
+  }
+
+  public String getDeviceName() {
+    return deviceName;
+  }
+
+  public Integer getState() {
+    return state;
+  }
+
+  public Integer getStateId() {
+    return stateId;
+  }
+
+  public void setDeviceUrl(String deviceUrl) {
+    this.deviceUrl = deviceUrl;
+  }
+
+  public void setDeviceStringId(String deviceStringId) {
+    this.deviceStringId = deviceStringId;
+  }
+
+  public void setDeviceName(String deviceName) {
+    this.deviceName = deviceName;
+  }
+
+  public void setState(Integer state) {
+    this.state = state;
+  }
+
+  public void setStateId(Integer stateId) {
+    this.stateId = stateId;
+  }
 }

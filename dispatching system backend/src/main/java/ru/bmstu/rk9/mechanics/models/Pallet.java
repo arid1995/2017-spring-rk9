@@ -8,36 +8,37 @@ import java.util.HashMap;
  * Created by farid on 5/2/17.
  */
 public class Pallet {
-    private int capacity;
-    private int currentCount;
-    private HashMap<Integer, Billet> billets;
 
-    public Pallet(int capacity, int technicalProcessId) {
-        billets = new HashMap<>();
+  private int capacity;
+  private int currentCount;
+  private HashMap<Integer, Billet> billets;
 
-        this.capacity = capacity > 0 ? capacity : 0;
-        for (int i = 0; i < capacity; i++) {
-            billets.put(i, new Billet(technicalProcessId));
-        }
+  public Pallet(int capacity, int technicalProcessId) {
+    billets = new HashMap<>();
 
-        currentCount = capacity;
+    this.capacity = capacity > 0 ? capacity : 0;
+    for (int i = 0; i < capacity; i++) {
+      billets.put(i, new Billet(technicalProcessId));
     }
 
-    public Billet take() {
-        if (!billets.isEmpty()) {
-            currentCount--;
-            return billets.get(currentCount);
-        }
+    currentCount = capacity;
+  }
 
-        return null;
+  public Billet take() {
+    if (!billets.isEmpty()) {
+      currentCount--;
+      return billets.get(currentCount);
     }
 
-    public void putBillet(Billet billet) {
-        if (currentCount >= capacity) {
-            throw new MaximumCapacityException();
-        }
+    return null;
+  }
 
-        billets.put(currentCount, billet);
-        currentCount++;
+  public void putBillet(Billet billet) {
+    if (currentCount >= capacity) {
+      throw new MaximumCapacityException();
     }
+
+    billets.put(currentCount, billet);
+    currentCount++;
+  }
 }

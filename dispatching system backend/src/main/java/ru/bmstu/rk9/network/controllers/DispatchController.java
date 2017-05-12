@@ -59,28 +59,6 @@ public class DispatchController extends Controller {
         return ResponseEntity.ok().body(counter);
     }
 
-    @RequestMapping(path = "/api/dispatch/default", method = RequestMethod.POST)
-    public ResponseEntity handleDefaultMessage(@RequestBody IncomingRequest<DBuiltInMessage> requestBody) {
-        counter.incrementAndGet();
-
-        try {
-            MessageDao messageDao = new MessageDao(Devices.getDeviceId("default"), "ok");
-            messageDao.persist();
-        } catch (SQLException ex) {
-            Logger log = Logger.getLogger(Logger.class.getName());
-            log.log(Level.WARNING, ex.getMessage(), ex);
-            return ResponseEntity.status(500).body("Oops");
-        }
-
-        SBuiltInMessage message = new SBuiltInMessage(Long.toString((new Random()).nextLong()),
-                Float.toString((new Random()).nextFloat()));
-
-        messageHandlerService.pushToDevice(Devices.getDeviceId("default"), SMessageTypes.BUILT_IN_PUSH_TYPE,
-                message);
-
-        return ResponseEntity.ok().body("Ok");
-    }
-
     @RequestMapping(path = "/api/dispatch/addtask", method = RequestMethod.POST)
     public ResponseEntity startTask(@RequestBody ProductionTask task) {
         String violations = getViolationString(task);

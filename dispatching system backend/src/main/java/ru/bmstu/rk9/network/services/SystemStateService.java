@@ -13,39 +13,31 @@ import java.util.logging.Logger;
  */
 @Service
 public class SystemStateService {
-    private SystemStateDao currentState;
-    private Conveyor conveyor;
-    private Machine machine1;
-    private Machine machine2;
-    private Robot robot1;
-    private Robot robot2;
-    private Stacker stacker;
-    private Stock stock;
 
-    public SystemStateDao getCurrentState() {
-        if (currentState == null) {
-            loadLastSystemState();
-        }
+  private SystemStateDao currentState;
+  private Conveyor conveyor;
+  private Machine machine1;
+  private Machine machine2;
+  private Robot robot1;
+  private Robot robot2;
+  private Stacker stacker;
+  private Stock stock;
 
-        return currentState;
+  public SystemStateDao getCurrentState() {
+    if (currentState == null) {
+      loadLastSystemState();
     }
 
-    public void setCurrentState(SystemStateDao currentState) {
-        this.currentState = currentState;
-        try {
-            currentState.persist();
-        } catch (SQLException e) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-    }
+    return currentState;
+  }
 
-    private void loadLastSystemState() {
-        currentState = new SystemStateDao();
+  public void setCurrentState(SystemStateDao currentState) {
+    this.currentState = currentState;
+    //currentState.persist();
+  }
 
-        try {
-            currentState.getLast();
-        } catch (SQLException e) {
-            Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-    }
+  private void loadLastSystemState() {
+    currentState = new SystemStateDao();
+    currentState.getLast();
+  }
 }
