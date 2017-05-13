@@ -17,6 +17,7 @@ import ru.bmstu.rk9.mechanics.models.SystemState;
  * Created by farid on 4/21/17.
  */
 public class SystemStateDao implements Dao<SystemState> {
+
   private static AtomicInteger idGenerator = new AtomicInteger(-1);
 
   @Override
@@ -54,9 +55,17 @@ public class SystemStateDao implements Dao<SystemState> {
   @Override
   public SystemState getLast() {
     try {
-      return Database.select("SELECT TOP 1 * FROM state_log ORDER BY id DESC", (result) -> {
-        if (!result.next()) return null;
-        int stateId = result.getInt("id");
+      return Database.select("SELECT TOP 1 * FROM state_log ORDER BY state_id DESC", (result) -> {
+        if (!result.next()) {
+          Timestamp created = new Timestamp(System.currentTimeMillis());
+          SystemState systemState = new SystemState(0, created, new Stacker(0, 0));
+          ArrayList<Robot> robots = new RobotDao().getAll();
+          ArrayList<Machine> machines = new MachineDao().getAll();
+          systemState.setRobotStates(robots);
+          systemState.setMachineStates(machines);
+          return systemState;
+        }
+        int stateId = result.getInt("state_id");
         Timestamp created = result.getTimestamp("created");
         int stackerState = result.getInt("stacker_state");
         //TODO: decide what to do with the stacker
@@ -71,9 +80,8 @@ public class SystemStateDao implements Dao<SystemState> {
       });
     } catch (SQLException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+      return null;
     }
-
-    return null;
   }
 
   @Override

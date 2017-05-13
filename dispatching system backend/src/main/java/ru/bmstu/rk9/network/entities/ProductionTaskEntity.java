@@ -2,12 +2,11 @@ package ru.bmstu.rk9.network.entities;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 
 /**
  * Created by farid on 5/2/17.
  */
-public class ProductionTask implements Comparable<ProductionTask> {
+public class ProductionTaskEntity implements Comparable<ProductionTaskEntity> {
     @NotNull
     @Min(1)
     private Integer amount;
@@ -40,7 +39,7 @@ public class ProductionTask implements Comparable<ProductionTask> {
         this.priority = priority;
     }
 
-    public int compareTo(ProductionTask task) {
+    public int compareTo(ProductionTaskEntity task) {
         if (priority == null || task.priority == null) {
             return 0;
         } else {

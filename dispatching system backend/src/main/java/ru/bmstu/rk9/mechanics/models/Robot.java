@@ -6,8 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by farid on 5/2/17.
  */
 public class Robot extends Device {
-  private static AtomicInteger idGenerator = new AtomicInteger();
+
   private Integer robotId;
+
+  public Robot(String deviceStringId, String deviceName) {
+    super(deviceStringId, deviceName);
+  }
 
   public Robot(Integer deviceId, String deviceStringId, String deviceName, Integer robotId) {
     super(deviceId, deviceStringId, deviceName);

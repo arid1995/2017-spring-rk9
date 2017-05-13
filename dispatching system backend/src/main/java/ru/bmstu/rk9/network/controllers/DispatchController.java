@@ -7,21 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
-import ru.bmstu.rk9.Devices;
-import ru.bmstu.rk9.network.entities.ProductionTask;
-import ru.bmstu.rk9.messages_deprecated.fromdevice.DBuiltInMessage;
-import ru.bmstu.rk9.messages_deprecated.fromdevice.IncomingRequest;
-import ru.bmstu.rk9.messages_deprecated.todevice.SBuiltInMessage;
-import ru.bmstu.rk9.messages_deprecated.todevice.SMessageTypes;
+import ru.bmstu.rk9.network.entities.ProductionTaskEntity;
 import ru.bmstu.rk9.network.services.MessageHandlerService;
-import ru.bmstu.rk9.mechanics.dao.MessageDao;
 import ru.bmstu.rk9.network.services.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.*;
-import java.sql.SQLException;
-import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,23 +25,11 @@ public class DispatchController extends Controller {
     private final TaskService taskService;
     private final AtomicLong counter = new AtomicLong(0);
     private ObjectMapper mapper = new ObjectMapper();
-    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
     public DispatchController(MessageHandlerService messageHandlerService, TaskService taskService) {
         this.messageHandlerService = messageHandlerService;
         this.taskService = taskService;
-    }
-
-    private <T> String getViolationString(T entity) {
-        Set<ConstraintViolation<T>> violations = validator.validate(entity);
-        StringBuilder violationString = new StringBuilder();
-
-        for (ConstraintViolation<T> violation : violations) {
-            violationString.append(violation.getPropertyPath()).append(" ")
-                    .append(violation.getMessage()).append("\n");
-        }
-        return violationString.toString();
     }
 
     @RequestMapping(path = "/api/dispatch/request", method = RequestMethod.POST)
@@ -60,7 +38,7 @@ public class DispatchController extends Controller {
     }
 
     @RequestMapping(path = "/api/dispatch/addtask", method = RequestMethod.POST)
-    public ResponseEntity startTask(@RequestBody ProductionTask task) {
+    public ResponseEntity startTask(@RequestBody ProductionTaskEntity task) {
         String violations = getViolationString(task);
         if (!violations.equals(""))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations);

@@ -7,12 +7,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by farid on 5/2/17.
  */
 public class Machine extends Device {
+
   public static final String MILLING_TYPE = "Milling";
   public static final String LATHE_TYPE = "Lathe";
 
   private Integer machineId;
   private String machineType;
   private ArrayList<Process> technicalProcesses = new ArrayList<>();
+
+  public Machine(String deviceStringId, String deviceName, String machineType) {
+    super(deviceStringId, deviceName);
+    this.machineType = machineType;
+  }
 
   public Machine(Integer deviceId, String deviceStringId, String deviceName,
       Integer machineId, String machineType,

@@ -44,7 +44,7 @@ public class MachineDao implements Dao<Machine> {
   @Override
   public ArrayList<Machine> getAll() {
     try {
-      return Database.select("SELECT m.machine_id mmid, m.machine_type, d.device_id ddid,"
+      return Database.select("SELECT m.machine_id mmid, m.machine_type mmt, d.device_id ddid,"
           + " d.device_string_id ddsid, d.device_name ddn"
           + " FROM machine m INNER JOIN device d"
           + " ON m.device_id=d.device_id", (result) -> {

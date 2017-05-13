@@ -14,8 +14,8 @@ public class TableManager {
       Database.update("CREATE COLUMN TABLE device(" +
           "device_id INTEGER," +
           "device_string_id VARCHAR(255)," +
-          "device_name" +
-          "PRIMARY KEY (id)" +
+          "device_name VARCHAR(255)," +
+          "PRIMARY KEY (device_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -24,7 +24,7 @@ public class TableManager {
       Database.update("CREATE COLUMN TABLE robot(" +
           "robot_id integer," +
           "device_id INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (robot_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -34,7 +34,7 @@ public class TableManager {
           "machine_id INTEGER," +
           "machine_type VARCHAR(255)," +
           "device_id INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (machine_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -43,7 +43,7 @@ public class TableManager {
       Database.update("CREATE COLUMN TABLE detail(" +
           "detail_id INTEGER," +
           "name VARCHAR(255)," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (detail_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -53,7 +53,7 @@ public class TableManager {
           "order_id INTEGER," +
           "detail_id INTEGER," +
           "amount INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (order_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -64,7 +64,7 @@ public class TableManager {
           "machine_id INTEGER," +
           "program_name VARCHAR(255)," +
           "duration INT," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (process_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -75,7 +75,7 @@ public class TableManager {
           "process_id INTEGER," +
           "detail_id INTEGER," +
           "process_order INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (process_to_detail_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -86,7 +86,7 @@ public class TableManager {
           "state_id INTEGER," +
           "machine_id INTEGER," +
           "machine_state INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (machine_state_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -97,7 +97,7 @@ public class TableManager {
           "state_id INTEGER," +
           "robot_id INTEGER," +
           "robot_state INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (robot_state_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -107,7 +107,7 @@ public class TableManager {
           "state_id INTEGER," +
           "created TIMESTAMP," +
           "stacker_state INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (state_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
@@ -118,7 +118,7 @@ public class TableManager {
           "created TIMESTAMP," +
           "device_id INTEGER," +
           "status INTEGER," +
-          "PRIMARY KEY (id)" +
+          "PRIMARY KEY (message_id)" +
           ");");
     } catch (SQLException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);

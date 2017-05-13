@@ -13,6 +13,11 @@ public class Device {
   protected Integer state;
   protected Integer stateId;
 
+  public Device(String deviceStringId, String deviceName) {
+    this.deviceStringId = deviceStringId;
+    this.deviceName = deviceName;
+  }
+
   public Device(Integer deviceId, String deviceStringId, String deviceName) {
     this.deviceId = deviceId;
     this.deviceStringId = deviceStringId;
@@ -24,6 +29,8 @@ public class Device {
     this.deviceName = deviceName;
     this.state = state;
   }
+
+
 
   public void sendMessageToDevice() {
 
