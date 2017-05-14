@@ -52,6 +52,10 @@ public class Device {
     return stateId;
   }
 
+  public void setDeviceId(Integer deviceId) {
+    this.deviceId = deviceId;
+  }
+
   public void setDeviceUrl(String deviceUrl) {
     this.deviceUrl = deviceUrl;
   }

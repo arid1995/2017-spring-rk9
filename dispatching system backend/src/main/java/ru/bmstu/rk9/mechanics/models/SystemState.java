@@ -36,6 +36,10 @@ public class SystemState {
     return machineStates;
   }
 
+  public void setSystemStateId(Integer systemStateId) {
+    this.systemStateId = systemStateId;
+  }
+
   public void setCreated(Timestamp created) {
     this.created = created;
   }

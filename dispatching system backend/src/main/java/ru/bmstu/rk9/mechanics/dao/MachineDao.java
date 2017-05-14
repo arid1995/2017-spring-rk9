@@ -22,10 +22,13 @@ public class MachineDao implements Dao<Machine> {
     try {
       int deviceId = Utils.getNextDeviceId();
       int machineId = Utils.getNextId("machine", "machine_id", idGenerator);
+
       String machineTableQuery = "INSERT INTO machine (machine_id, machine_type, device_id) values("
           + machineId + ",'" + machine.getMachineType() + "'," + deviceId + ')';
-      String deviceTableQuery = "INSERT INTO device (device_id, device_string_id, device_name) values("
-          + deviceId + ",'" + machine.getDeviceStringId() + "','" + machine.getDeviceName() + "')";
+      String deviceTableQuery =
+          "INSERT INTO device (device_id, device_string_id, device_name) values("
+              + deviceId + ",'" + machine.getDeviceStringId() + "','" + machine.getDeviceName()
+              + "')";
 
       Database.update(machineTableQuery);
       Database.update(deviceTableQuery);
@@ -39,6 +42,32 @@ public class MachineDao implements Dao<Machine> {
   @Override
   public Machine getLast() {
     return null;
+  }
+
+  public Machine getById(int id) {
+    try {
+      return Database.select("SELECT m.machine_id mmid, m.machine_type mmt, d.device_id ddid,"
+          + " d.device_string_id ddsid, d.device_name ddn"
+          + " FROM machine m INNER JOIN device d"
+          + " ON m.device_id=d.device_id WHERE m.machine_id=" + id, (result) -> {
+        Machine machine = null;
+        if (result.next()) {
+          Integer machineId = result.getInt("mmid");
+          String machineType = result.getString("mmt");
+          Integer deviceId = result.getInt("ddid");
+          String deviceStringId = result.getString("ddsid");
+          String deviceName = result.getString("ddn");
+
+          machine = new Machine(deviceId, deviceStringId, deviceName, machineId,
+              machineType, null
+          );
+        }
+        return machine;
+      });
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+      return null;
+    }
   }
 
   @Override
@@ -69,6 +98,21 @@ public class MachineDao implements Dao<Machine> {
     } catch (SQLException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
       return null;
+    }
+  }
+
+  public void addProcessToMachine(Process process, Machine machine) {
+    Integer processId = process.getProcessId();
+    Integer machineId = machine.getMachineId();
+
+    try {
+      if (processId == null || machineId == null) {
+        throw new SQLException("Process id or machine id must not be null");
+      }
+      Database.update("INSERT INTO machine_to_process (machine_id, process_id) values("
+          + machineId + ',' + processId + ")");
+    } catch (SQLException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
     }
   }
 }

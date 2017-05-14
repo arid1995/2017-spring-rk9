@@ -33,6 +33,7 @@ public class SystemStateDao implements Dao<SystemState> {
           .append(created.getTime()).append(",")
           .append(state.getStacker().getState()).append(")");
       Database.update(query.toString());
+      state.setSystemStateId(newId);
     } catch (SQLException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
       return -1;

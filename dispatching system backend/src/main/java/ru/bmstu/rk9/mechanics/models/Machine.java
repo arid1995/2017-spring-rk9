@@ -50,6 +50,15 @@ public class Machine extends Device {
     return technicalProcesses;
   }
 
+  public void setMachineId(Integer machineId) {
+    this.machineId = machineId;
+  }
+
+  public void setTechnicalProcesses(
+      ArrayList<Process> technicalProcesses) {
+    this.technicalProcesses = technicalProcesses;
+  }
+
   public void startProcess(Billet billet) {
 
   }
