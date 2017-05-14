@@ -9,7 +9,7 @@ public class Stacker extends Device {
     super(deviceId, "saf", "asf");
   }
 
-  public void putPalletOnConveyor(Billet billet) {
+  public void putPalletOnConveyor(Pallet billet) {
 
   }
 

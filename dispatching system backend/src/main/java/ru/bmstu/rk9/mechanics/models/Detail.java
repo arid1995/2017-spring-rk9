@@ -9,7 +9,7 @@ public class Detail {
 
   private Integer detailId;
   private String name;
-  ArrayList<Process> processes;
+  private ArrayList<Process> processes;
 
   public Detail(String name, ArrayList<Process> processes) {
     this.name = name;

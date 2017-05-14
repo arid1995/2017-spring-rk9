@@ -21,7 +21,6 @@ public class Conveyor extends Device {
   }
 
   private class Key {
-
     public byte state; //0 - closed, 1 - opened
   }
 }

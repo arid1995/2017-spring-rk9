@@ -1,52 +1,64 @@
 package ru.bmstu.rk9.mechanics.schedule;
 
 import ru.bmstu.rk9.mechanics.dao.Dao;
+import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
+import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Machine;
+import ru.bmstu.rk9.mechanics.models.Order;
+import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Robot;
+import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.SystemState;
-import ru.bmstu.rk9.network.entities.ProductionTaskEntity;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * Created by farid on 4/29/17.
  */
 public class Dispatcher {
 
-  private final PriorityQueue<ProductionTaskEntity> tasks = new PriorityQueue<>();
   private boolean isWorking = false;
   private final ArrayList<Machine> machines;
   private final ArrayList<Robot> robots;
   //private final Conveyor conveyor;
-  //private final Stacker stacker;
+  private final Stacker stacker;
   private final SystemState systemState;
+  private ArrayList<Order> orders = new ArrayList<>();
+  private ArrayList<Pallet> pallets;
+  Scheduler scheduler = new Scheduler();
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();
 
-  public Dispatcher(int machineNumber) {
+  public Dispatcher() {
     systemState = systemStateDao.getLast();
     robots = systemState.getRobotStates();
     machines = systemState.getMachineStates();
-  }
-
-  public void addTask(ProductionTaskEntity task) {
-    tasks.add(task);
-
-    if (isWorking) {
-      return;
-    }
-
-    isWorking = true;
+    stacker = new Stacker(0, 0);
+    orders = new OrderDao().getUnfinishedOrders();
+    reschedule();
     start();
   }
 
-  public PriorityQueue<ProductionTaskEntity> getTasks() {
-    return new PriorityQueue<>(tasks);
+  public void addTask(Order order) {
+    orders.add(order);
+    reschedule();
+    start();
   }
 
-  public void start() {
+  public ArrayList<Order> getOrders() {
+    return new ArrayList<>(orders);
+  }
 
+  public void save() {
+
+  }
+
+  private void start() {
+    stacker.putPalletOnConveyor(pallets.remove(0));
+  }
+
+  private void reschedule() {
+    pallets = scheduler.makePalletsFromOrders(orders);
   }
 }

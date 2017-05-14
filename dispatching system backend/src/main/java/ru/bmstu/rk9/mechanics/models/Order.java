@@ -7,10 +7,19 @@ public class Order {
   private Integer orderId;
   private Detail detail;
   private Integer amount;
+  private Integer remained;
 
-  public Order(Detail detail, Integer amount) {
+  public Order(Detail detail, Integer amount, Integer remained) {
     this.detail = detail;
     this.amount = amount;
+    this.remained = remained;
+  }
+
+  public Order(Integer orderId, Detail detail, Integer amount, Integer remained) {
+    this.orderId = orderId;
+    this.detail = detail;
+    this.amount = amount;
+    this.remained = remained;
   }
 
   public Integer getOrderId() {
@@ -25,11 +34,19 @@ public class Order {
     return amount;
   }
 
+  public Integer getRemained() {
+    return remained;
+  }
+
   public void setDetail(Detail detail) {
     this.detail = detail;
   }
 
-  public void setAmount(Integer amount) {
-    this.amount = amount;
+  public void setOrderId(Integer orderId) {
+    this.orderId = orderId;
+  }
+
+  public void takePallet() {
+    remained -= 2;
   }
 }

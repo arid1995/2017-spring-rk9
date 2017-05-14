@@ -44,6 +44,7 @@ public class TableManager {
         "order_id INTEGER," +
         "detail_id INTEGER," +
         "amount INTEGER," +
+        "remained INTEGER, " +
         "PRIMARY KEY (order_id)" +
         ");");
     //6: Process

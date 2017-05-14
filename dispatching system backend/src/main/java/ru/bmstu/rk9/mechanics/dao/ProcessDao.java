@@ -16,7 +16,7 @@ import sun.rmi.runtime.Log;
  */
 public class ProcessDao implements Dao<Process> {
 
-  private static AtomicInteger idGenerator = new AtomicInteger();
+  private static AtomicInteger idGenerator = new AtomicInteger(-1);
 
   @Override
   public int persist(Process process) {

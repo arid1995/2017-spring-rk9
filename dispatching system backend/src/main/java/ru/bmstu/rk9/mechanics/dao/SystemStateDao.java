@@ -62,6 +62,12 @@ public class SystemStateDao implements Dao<SystemState> {
           SystemState systemState = new SystemState(0, created, new Stacker(0, 0));
           ArrayList<Robot> robots = new RobotDao().getAll();
           ArrayList<Machine> machines = new MachineDao().getAll();
+          for (Robot robot : robots) {
+            robot.setState(0);
+          }
+          for (Machine machine: machines) {
+            machine.setState(0);
+          }
           systemState.setRobotStates(robots);
           systemState.setMachineStates(machines);
           return systemState;

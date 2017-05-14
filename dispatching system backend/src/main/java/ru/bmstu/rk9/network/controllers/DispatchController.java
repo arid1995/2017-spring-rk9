@@ -20,46 +20,32 @@ import java.util.logging.Logger;
  * Created by farid on 3/24/17.
  */
 @RestController
+@RequestMapping("/api/dispatch")
 public class DispatchController extends Controller {
-    private final MessageHandlerService messageHandlerService;
-    private final TaskService taskService;
-    private final AtomicLong counter = new AtomicLong(0);
-    private ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    public DispatchController(MessageHandlerService messageHandlerService, TaskService taskService) {
-        this.messageHandlerService = messageHandlerService;
-        this.taskService = taskService;
+  private final MessageHandlerService messageHandlerService;
+  private final AtomicLong counter = new AtomicLong(0);
+  private ObjectMapper mapper = new ObjectMapper();
+
+  @Autowired
+  public DispatchController(MessageHandlerService messageHandlerService, TaskService taskService) {
+    this.messageHandlerService = messageHandlerService;
+  }
+
+  @RequestMapping(path = "/request", method = RequestMethod.POST)
+  public ResponseEntity dispatch() {
+    return ResponseEntity.ok().body(counter);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity handleException(HttpServletRequest request,
+      HttpMessageNotReadableException ex) {
+    try {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(wrapErrorMessage(WRONG_PARAMETER_TYPE));
+    } catch (JsonProcessingException e) {
+      Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something is wrong");
     }
-
-    @RequestMapping(path = "/api/dispatch/request", method = RequestMethod.POST)
-    public ResponseEntity dispatch() {
-        return ResponseEntity.ok().body(counter);
-    }
-
-    @RequestMapping(path = "/api/dispatch/addtask", method = RequestMethod.POST)
-    public ResponseEntity startTask(@RequestBody ProductionTaskEntity task) {
-        String violations = getViolationString(task);
-        if (!violations.equals(""))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations);
-
-        taskService.addTask(task);
-
-        return ResponseEntity.ok().body("Task accepted");
-    }
-
-    @RequestMapping(path = "/api/dispatch/shutdown", method = RequestMethod.DELETE)
-    public void shutDown() {
-        System.exit(0);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleException(HttpServletRequest request, HttpMessageNotReadableException ex) {
-        try {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(wrapErrorMessage(WRONG_PARAMETER_TYPE));
-        } catch (JsonProcessingException e) {
-            Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something is wrong");
-        }
-    }
+  }
 }

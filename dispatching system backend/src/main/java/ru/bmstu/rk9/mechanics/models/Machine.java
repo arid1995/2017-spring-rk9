@@ -11,6 +11,10 @@ public class Machine extends Device {
   public static final String MILLING_TYPE = "Milling";
   public static final String LATHE_TYPE = "Lathe";
 
+  public static final int FREE = 0;
+  public static final int BUSY = 1;
+  public static final int FINISHED = 2;
+
   private Integer machineId;
   private String machineType;
   private ArrayList<Process> technicalProcesses = new ArrayList<>();

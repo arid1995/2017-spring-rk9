@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by farid on 5/2/17.
  */
-public class Device {
+public abstract class Device {
   protected Integer deviceId;
   protected String deviceUrl;
   protected String deviceStringId;
@@ -29,8 +29,6 @@ public class Device {
     this.deviceName = deviceName;
     this.state = state;
   }
-
-
 
   public void sendMessageToDevice() {
 
