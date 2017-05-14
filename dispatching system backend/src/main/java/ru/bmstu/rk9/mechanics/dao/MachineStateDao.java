@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Process;
-import ru.bmstu.rk9.mechanics.models.Robot;
 
 /**
  * Created by farid on 5/12/17.
@@ -30,7 +29,7 @@ public class MachineStateDao implements Dao<Machine> {
           String deviceName = result.getString("ddn");
           int machineState = result.getInt("msms");
 
-          ArrayList<Process> processes = new ProcessDao().getMachineProcesses(machineId);
+          ArrayList<Process> processes = new ProcessDao().getByMachineId(machineId);
 
           Machine machine = new Machine(deviceId, deviceStringId, deviceName, machineState,
               machineId, machineType, processes

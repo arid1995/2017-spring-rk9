@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Process;
-import ru.bmstu.rk9.mechanics.models.Robot;
 
 /**
  * Created by farid on 5/11/17.
@@ -86,7 +85,7 @@ public class MachineDao implements Dao<Machine> {
           String deviceStringId = result.getString("ddsid");
           String deviceName = result.getString("ddn");
 
-          ArrayList<Process> processes = new ProcessDao().getMachineProcesses(machineId);
+          ArrayList<Process> processes = new ProcessDao().getByMachineId(machineId);
 
           Machine machine = new Machine(deviceId, deviceStringId, deviceName, machineId,
               machineType, processes

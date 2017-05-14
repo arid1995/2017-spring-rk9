@@ -11,6 +11,11 @@ public class Detail {
   private String name;
   ArrayList<Process> processes;
 
+  public Detail(String name, ArrayList<Process> processes) {
+    this.name = name;
+    this.processes = processes;
+  }
+
   public Detail(Integer detailId, String name,
       ArrayList<Process> processes) {
     this.detailId = detailId;
@@ -26,6 +31,10 @@ public class Detail {
     return name;
   }
 
+  public ArrayList<Process> getProcesses() {
+    return processes;
+  }
+
   public void setDetailId(Integer detailId) {
     this.detailId = detailId;
   }
@@ -33,4 +42,6 @@ public class Detail {
   public void setName(String name) {
     this.name = name;
   }
+
+
 }
