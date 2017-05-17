@@ -25,7 +25,7 @@ public class Dispatcher {
   private final Stacker stacker;
   private final SystemState systemState;
   private ArrayList<Order> orders = new ArrayList<>();
-  private ArrayList<Pallet> pallets;
+  private ArrayList<Pallet> pallets = new ArrayList<>();
   Scheduler scheduler = new Scheduler();
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();

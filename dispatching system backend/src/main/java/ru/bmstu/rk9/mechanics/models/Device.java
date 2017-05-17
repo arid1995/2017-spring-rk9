@@ -1,11 +1,19 @@
 package ru.bmstu.rk9.mechanics.models;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import ru.bmstu.rk9.mechanics.commands.Command;
 
 /**
  * Created by farid on 5/2/17.
  */
+
 public abstract class Device {
+
   protected Integer deviceId;
   protected String deviceUrl;
   protected String deviceStringId;
@@ -30,8 +38,23 @@ public abstract class Device {
     this.state = state;
   }
 
-  public void sendMessageToDevice() {
 
+  public void sendMessageToDevice(Command command) {
+    try {
+      HttpResponse<JsonNode> jsonResponse =
+          Unirest.post(
+              "https://iotmmsp1942516588trial.hanatrial.ondemand.com/com.sap.iotservices.mms/v1/api/http/push/"
+                  + deviceStringId)
+              .basicAuth("arid1995@mail.ru", "Tank1995")
+              .header("Content-Type", "application/json; charset=utf-8")
+              .body(command.toJson())
+              .asJson();
+
+      System.out.println(jsonResponse.getBody().toString());
+      System.out.println(command.toJson());
+    } catch (UnirestException ex) {
+      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
+    }
   }
 
   public String getDeviceStringId() {
