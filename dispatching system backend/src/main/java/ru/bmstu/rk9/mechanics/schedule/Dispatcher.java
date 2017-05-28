@@ -3,6 +3,7 @@ package ru.bmstu.rk9.mechanics.schedule;
 import ru.bmstu.rk9.mechanics.dao.Dao;
 import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
+import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.models.Pallet;
