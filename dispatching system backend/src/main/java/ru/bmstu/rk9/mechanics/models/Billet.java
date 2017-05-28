@@ -8,12 +8,18 @@ import java.util.LinkedList;
  */
 public class Billet {
   private ArrayList<Process> processes;
+  private Integer palletId;
 
-  public Billet(Detail detail) {
+  public Billet(Detail detail, Integer palletId) {
     this.processes = new ArrayList<>(detail.getProcesses());
+    this.palletId = palletId;
   }
 
   public ArrayList<Process> getProcesses() {
     return processes;
+  }
+
+  public Integer getPalletId() {
+    return palletId;
   }
 }

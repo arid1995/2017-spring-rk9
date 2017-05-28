@@ -5,24 +5,30 @@ import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Detail;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.models.Pallet;
+import ru.bmstu.rk9.mechanics.models.Stock;
 
 /**
  * Created by farid on 5/15/17.
  */
 public class Scheduler {
 
-  public ArrayList<Pallet> makePalletsFromOrders(ArrayList<Order> orders) {
-    ArrayList<Pallet> pallets = new ArrayList<>();
-    for (Order order : orders) {
-      for (int i = 0; i < order.getRemained(); i += 2) {
-        Pallet pallet = new Pallet(2);
-        for (int j = i; j < i + 2 && j < order.getRemained(); j++) {
-          Billet billet = new Billet(order.getDetail());
-          pallet.putBillet(billet);
+  public void schedulePalletsInStock(ArrayList<Order> orders, Stock stock) {
+    try {
+      for (Order order : orders) {
+        for (int i = 0; i < order.getRemained(); i += 2) {
+          Pallet pallet = stock.getPalletAt(i / 2);
+          if (pallet == null) {
+            throw new IndexOutOfBoundsException();
+          }
+
+          for (int j = i; j < i + 2 && j < order.getRemained(); j++) {
+            Billet billet = new Billet(order.getDetail(), pallet.getId());
+            pallet.putBillet(billet);
+          }
+          stock.setPalletAt(i / 2, pallet);
         }
-        pallets.add(pallet);
       }
+    } catch (IndexOutOfBoundsException ignore) {
     }
-    return pallets;
   }
 }

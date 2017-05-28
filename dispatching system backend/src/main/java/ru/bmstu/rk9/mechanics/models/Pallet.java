@@ -12,11 +12,13 @@ public class Pallet {
   private int capacity;
   private int currentCount;
   private HashMap<Integer, Billet> billets;
+  private Order order;
+  private Integer id;
 
-  public Pallet(int capacity) {
+  public Pallet(int capacity, Integer id) {
     this.billets = new HashMap<>();
-
     this.capacity = capacity > 0 ? capacity : 1;
+    this.id = id;
 
     currentCount = capacity;
   }
@@ -30,6 +32,10 @@ public class Pallet {
     return null;
   }
 
+  public Integer getId() {
+    return id;
+  }
+
   public void putBillet(Billet billet) {
     if (currentCount >= capacity) {
       throw new MaximumCapacityException();
@@ -37,5 +43,13 @@ public class Pallet {
 
     billets.put(currentCount, billet);
     currentCount++;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  public int removeFromOrder() {
+    return order.takeBillets(currentCount);
   }
 }

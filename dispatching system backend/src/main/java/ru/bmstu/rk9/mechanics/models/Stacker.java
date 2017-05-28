@@ -9,8 +9,9 @@ public class Stacker extends Device {
     super(deviceId, "saf", "asf");
   }
 
-  public void putPalletOnConveyor(Pallet billet) {
-
+  public void putPalletOnConveyor(Pallet pallet) {
+    pallet.removeFromOrder();
+    sendMessageToDevice();
   }
 
   public void takePalletFromConveyor(Billet billet) {

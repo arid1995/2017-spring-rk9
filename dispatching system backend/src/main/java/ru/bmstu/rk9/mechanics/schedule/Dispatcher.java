@@ -3,12 +3,12 @@ package ru.bmstu.rk9.mechanics.schedule;
 import ru.bmstu.rk9.mechanics.dao.Dao;
 import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
-import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.mechanics.models.Stacker;
+import ru.bmstu.rk9.mechanics.models.Stock;
 import ru.bmstu.rk9.mechanics.models.SystemState;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class Dispatcher {
   private final ArrayList<Robot> robots;
   //private final Conveyor conveyor;
   private final Stacker stacker;
+  private final Stock stock;
   private final SystemState systemState;
   private ArrayList<Order> orders = new ArrayList<>();
-  private ArrayList<Pallet> pallets;
   Scheduler scheduler = new Scheduler();
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();
@@ -35,6 +35,8 @@ public class Dispatcher {
     robots = systemState.getRobotStates();
     machines = systemState.getMachineStates();
     stacker = new Stacker(0, 0);
+    int STOCK_CAPACITY = 20;
+    stock = new Stock(STOCK_CAPACITY, STOCK_CAPACITY);
     orders = new OrderDao().getUnfinishedOrders();
     reschedule();
     start();
@@ -43,7 +45,6 @@ public class Dispatcher {
   public void addTask(Order order) {
     orders.add(order);
     reschedule();
-    start();
   }
 
   public ArrayList<Order> getOrders() {
@@ -55,10 +56,10 @@ public class Dispatcher {
   }
 
   private void start() {
-    stacker.putPalletOnConveyor(pallets.remove(0));
+    stacker.putPalletOnConveyor(stock.getNextPallet());
   }
 
   private void reschedule() {
-    pallets = scheduler.makePalletsFromOrders(orders);
+    scheduler.schedulePalletsInStock(orders, stock);
   }
 }

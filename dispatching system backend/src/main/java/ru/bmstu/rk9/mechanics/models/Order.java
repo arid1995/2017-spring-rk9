@@ -46,7 +46,13 @@ public class Order {
     this.orderId = orderId;
   }
 
-  public void takePallet() {
-    remained -= 2;
+  public int takeBillets(int amount) {
+    if (remained >= amount) {
+      remained -= amount;
+      return amount;
+    }
+    int tmp = remained;
+    remained = 0;
+    return tmp;
   }
 }
