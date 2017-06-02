@@ -14,6 +14,7 @@ public class Pallet {
   private HashMap<Integer, Billet> billets;
   private Order order;
   private Integer id;
+  private Integer key;
 
   public Pallet(int capacity, Integer id) {
     this.billets = new HashMap<>();
@@ -36,6 +37,10 @@ public class Pallet {
     return id;
   }
 
+  public Integer getKey() {
+    return key;
+  }
+
   public void putBillet(Billet billet) {
     if (currentCount >= capacity) {
       throw new MaximumCapacityException();
@@ -43,6 +48,10 @@ public class Pallet {
 
     billets.put(currentCount, billet);
     currentCount++;
+  }
+
+  public void setKey(Integer key) {
+    this.key = key;
   }
 
   public void setOrder(Order order) {

@@ -4,6 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.mechanics.commands.Command;
@@ -20,6 +21,7 @@ public abstract class Device {
   protected String deviceName;
   protected Integer state;
   protected Integer stateId;
+  protected LinkedList<Runnable> transactions;
 
   public Device(String deviceStringId, String deviceName) {
     this.deviceStringId = deviceStringId;
@@ -38,7 +40,6 @@ public abstract class Device {
     this.state = state;
   }
 
-
   public void sendMessageToDevice(Command command) {
     try {
       HttpResponse<JsonNode> jsonResponse =
@@ -55,6 +56,17 @@ public abstract class Device {
     } catch (UnirestException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
     }
+  }
+
+  protected void executeTransaction() {
+    Runnable transaction = transactions.poll();
+    if (transaction != null) {
+      transaction.run();
+    }
+  }
+
+  public void actionReady() {
+    executeTransaction();
   }
 
   public String getDeviceStringId() {

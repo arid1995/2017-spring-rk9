@@ -1,26 +1,29 @@
 package ru.bmstu.rk9.mechanics.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by farid on 5/2/17.
  */
 public class Conveyor extends Device {
-  private HashMap<Integer, Key> keys = new HashMap<>();
+  private HashMap<Integer, Pallet> pallets = new HashMap<>();
 
   public Conveyor(Integer deviceId, String deviceStringId, String deviceName, Integer state) {
     super(deviceId, deviceStringId, deviceName, state);
   }
 
-  public void openKey(Integer key) {
-    keys.get(key).state = 1;
+  public void movePallet(int palletId, int keyNumber) {
+    Pallet pallet
   }
 
-  public void closeKey(Integer key) {
-    keys.get(key).state = 0;
+  public void putPallet(Pallet pallet) {
+    transaction = () -> {
+      pallets.put(pallet.getId(), pallet);
+    };
   }
 
-  private class Key {
-    public byte state; //0 - closed, 1 - opened
+  public void takePallet() {
+
   }
 }

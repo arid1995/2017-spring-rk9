@@ -12,8 +12,10 @@ public class Stacker extends Device {
   }
 
   public void putPalletOnConveyor(Pallet pallet) {
-    pallet.removeFromOrder();
-    sendMessageToDevice(new ConveyorCommand());
+    transactions.push(() -> {
+      pallet.removeFromOrder();
+      sendMessageToDevice(new ConveyorCommand());
+    });
   }
 
   public void takePalletFromConveyor(Billet billet) {
