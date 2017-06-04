@@ -1,7 +1,7 @@
 from websocket_base import Websocket
 
 
-class Stacker(Websocket):
+class Machine(Websocket):
     def __init__(self, wsUrl, wsDevice, wsToken):
         super().__init__(wsUrl, wsDevice, wsToken)
 

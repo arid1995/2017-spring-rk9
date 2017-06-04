@@ -21,7 +21,6 @@ class Websocket(metaclass=ABCMeta):
         websocket.enableTrace(True)
         self.ws.on_open = self.on_open
         tr = threading.Thread(target=self.ws.run_forever)
-        tr.daemon = True
         tr.start()
 
     def on_message(self, ws, msg):
