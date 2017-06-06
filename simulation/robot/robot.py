@@ -1,12 +1,24 @@
 from common.websocket_base import Websocket
+from common.feedback import FeedbackMessage
+from robot.robot_command import Message
+import time
 
 
+# noinspection PyTypeChecker
 class Robot(Websocket):
     def __init__(self, wsId, wsToken):
         super().__init__(wsId, wsToken)
+        self.__COMMAND_MESSAGE = '322f9ecd48e90f0d3f55'
+        self.__SUCCESS_STATUS = 0
+        self.__ERROR_STATUS = 1
+        self.__PATH_DURATION = 5
+        self.__CLAW_OPEN_DURATION = 2
 
     def on_message(self, ws, msg):
-        pass
+        message = Message(msg)
+        print(msg + " NEW ONE!!!")
+        if hasattr(message, 'messageType'):
+            self.__executeCommand(message)
 
     def on_open(self, ws):
         pass
@@ -17,5 +29,15 @@ class Robot(Websocket):
     def on_error(self, ws, error):
         pass
 
-    def send(self, msgId, msg):
-        pass
+    def __executeCommand(self, message):
+        action = int(message.messages[0]['action'])
+        switcher = {
+            0: lambda: time.sleep(self.__CLAW_OPEN_DURATION),
+            1: lambda: time.sleep(self.__PATH_DURATION),
+            2: lambda: time.sleep(self.__CLAW_OPEN_DURATION),
+            3: lambda: time.sleep(self.__PATH_DURATION)
+        }
+        switcher[action]()
+        feedback = FeedbackMessage(self.__SUCCESS_STATUS)
+        self.ws.send(feedback.toJson())
+        print(feedback.toJson())
