@@ -1,7 +1,7 @@
-from websocket_base import Websocket
+from common.websocket_base import Websocket
 
 
-class Stacker(Websocket):
+class Conveyor(Websocket):
     def __init__(self, wsId, wsToken):
         super().__init__(wsId, wsToken)
 

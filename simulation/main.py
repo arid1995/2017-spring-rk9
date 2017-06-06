@@ -1,9 +1,8 @@
 # coding=utf-8
-from websocket_base import *
-from conveyor import Conveyor
-from machine import Machine
-from stacker import Stacker
-from robot import Robot
+from conveyor.conveyor import Conveyor
+from machine.machine import Machine
+from robot.robot import Robot
+from stacker.stacker import Stacker
 
 MILLING_ID = '1af6fa22-8ca0-489a-8702-ce30266707bc'
 MILLING_TOKEN = 'fdf76b5ab05f1efa6e16f218f236935a'

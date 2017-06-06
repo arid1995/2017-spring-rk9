@@ -1,4 +1,4 @@
-from websocket_base import Websocket
+from common.websocket_base import Websocket
 
 
 class Robot(Websocket):
