@@ -6,7 +6,7 @@ class Machine(Websocket):
         super().__init__(wsId, wsToken)
 
     def on_message(self, ws, msg):
-        pass
+        print(msg)
 
     def on_open(self, ws):
         pass

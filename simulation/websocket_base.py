@@ -5,12 +5,12 @@ import threading
 
 
 class Websocket(metaclass=ABCMeta):
-    __base_url = 'wss://iotmmsa93db5376.hana.ondemand.com/com.sap.iotservices.mms/v1/api/ws/data/'
+    __base_url = 'wss://iotmmsp1942516588trial.hanatrial.ondemand.com/com.sap.iotservices.mms/v1/api/ws/data/'
 
     def __init__(self, wsId, wsToken):
         self.ws = websocket.WebSocketApp(
             self.__base_url + wsId,
-            header=["Authorization: Bearer " + self.wsToken],
+            header=["Authorization: Bearer " + wsToken],
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close)
