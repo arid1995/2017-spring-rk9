@@ -2,13 +2,13 @@
 
 | NAME             | IDS                                  | TOKENS                           |
 | ---------------- |:------------------------------------:| --------------------------------:|
-| universal device | 75c98d13-8978-4d55-bc6c-d1c385e9fc35 | e9c938e7e384347ab5fe37c9f558de9c |
-| conveyor         | 6937b58a-d211-4504-ad96-d1acaf47f939 | e779fb2f735eee3c2296cc7a7e7a89b6 |
-| stacker          | 5b580079-fbe6-4519-b56f-417af57f8aa9 | 60e611e01ab51f5f85179b858732bf3f |
-| milling          | 1af6fa22-8ca0-489a-8702-ce30266707bc | fdf76b5ab05f1efa6e16f218f236935a |
-| lathe            | d71c1172-a50f-4cf0-a89f-192462a2b2c9 | a512c9f6bef381c186884382d9c79772 |
-| milling robot    | 71e22a22-0ae6-4bc4-8404-a21ef88017b1 | ef33338f4bf47614912c2911f9e61822 |
-| lathe robot      | 79386cc8-ca43-4533-b735-f29ca0eab9b9 | 979f743f7e2aec8c2475bf16cab0b4   |
+| universal device | d6db8eb0-56fe-4385-8d85-3084dd1218c1 | 3434125beeea0ed87cff6a7df1170c4 |
+| conveyor         | ec2750ed-45d9-4335-8dbd-08f86408a2b1 | e3878f719b4bc9b0696f9f1f80202eb8 |
+| stacker          | f4812d51-d523-4b9b-a1a7-bdc501d37104 | b2a0804a14243d71bfeaa5d7e87197f  |
+| milling machine  | 9bbf29a1-544a-4f7d-b978-71a5e6beba1d | 99ecbe43f4b51225aa41b4860ab51bb  |
+| lathe machine    | b0410017-8943-478c-a9c4-2c2407b7b770 | c1f7eb508058e795d372bd1910e1e1   |
+| milling robot    | a7a60605-ff3e-4559-adfd-388e8a13a168 | f04f5cfefd635b7817b959b2465668b  |
+| lathe robot      | 97ea22e7-d83b-4415-b4fc-0a5f162ef893 | b21fcd7f6ed13cd681b3b45d2d55ff   |
 --------------------------------------------------------
 # Message information
 ## Machine
@@ -36,21 +36,6 @@ programName - name of a program to be executed;
 #### Description
 Makes machine execute a program
 
-### Machine message:
-#### Direction: From device
-#### ID: 3e7bb584e61d06821ba6
-#### Fields:
-timestamp - time of creation;<br>
-status - status of operation
-
-| Status         | Value |
-|----------------|-------|
-|Success         |0      |
-|Error           |1      |
-
-#### Description
-Feedback message about operation completion
-
 ----------------------------------------------------
 ## Robot
 
@@ -71,21 +56,6 @@ action - required action;
 #### Description
 Makes robot perform some action
 
-### Robot message:
-#### Direction: From device
-#### ID: e0961e4b8595ea82c908
-#### Fields:
-timestamp - time of creation;<br>
-status - status of operation
-
-| Status         | Value |
-|----------------|-------|
-|Success         |0      |
-|Error           |1      |
-
-#### Description
-Feedback message about operation completion
-
 ---------------------------------------------------
 ## Conveyor
 
@@ -99,21 +69,6 @@ to - number of key to which to take the pallet;
 
 #### Description
 Commands conveyor to take pallet to a certain key
-
-### Conveyor message:
-#### Direction: From device
-#### ID: bbec753c4767238a640a
-#### Fields:
-timestamp - time of creation;<br>
-status - status of operation
-
-| Status         | Value |
-|----------------|-------|
-|Success         |0      |
-|Error           |1      |
-
-#### Description
-Feedback message about operation completion
 
 ---------------------------------------------------
 ## Stacker
@@ -129,10 +84,11 @@ cellNumber - to which cell to put or from which to take pallet;
 #### Description
 Commands stacker to place pallet from conveyor in the stock or on conveyor from the stock
 
-### Conveyor message:
-#### Direction: From device
-#### ID: b42133ef313105550892
-#### Fields:
+---------------------------------------------------
+# Feedback
+### Direction: From device
+### ID: 60a149ed9ff3de2df57e
+### Fields:
 timestamp - time of creation;<br>
 status - status of operation
 
@@ -143,5 +99,3 @@ status - status of operation
 
 #### Description
 Feedback message about operation completion
-
----------------------------------------------------
