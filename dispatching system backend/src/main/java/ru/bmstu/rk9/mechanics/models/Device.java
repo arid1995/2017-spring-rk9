@@ -21,7 +21,7 @@ public abstract class Device {
   protected String deviceName;
   protected Integer state;
   protected Integer stateId;
-  protected LinkedList<Runnable> transactions;
+  protected Runnable transaction;
 
   public Device(String deviceStringId, String deviceName) {
     this.deviceStringId = deviceStringId;
@@ -58,8 +58,7 @@ public abstract class Device {
     }
   }
 
-  protected void executeTransaction() {
-    Runnable transaction = transactions.poll();
+  public void executeTransaction() {
     if (transaction != null) {
       transaction.run();
     }

@@ -14,7 +14,7 @@ public class Conveyor extends Device {
   }
 
   public void movePallet(int palletId, int keyNumber) {
-    Pallet pallet
+    Pallet pallet;
   }
 
   public void putPallet(Pallet pallet) {
