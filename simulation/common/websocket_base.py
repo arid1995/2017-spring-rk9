@@ -36,7 +36,3 @@ class Websocket(metaclass=ABCMeta):
 
     def on_open(self, ws):
         print("Opened")
-
-    @abstractmethod
-    def send(self, msgId, msg):
-        print("Sent")
