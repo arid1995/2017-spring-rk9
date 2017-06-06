@@ -2,8 +2,8 @@ from websocket_base import Websocket
 
 
 class Stacker(Websocket):
-    def __init__(self, wsUrl, wsDevice, wsToken):
-        super().__init__(wsUrl, wsDevice, wsToken)
+    def __init__(self, wsId, wsToken):
+        super().__init__(wsId, wsToken)
 
     def on_message(self, ws, msg):
         pass
