@@ -19,7 +19,7 @@ CONVEYOR_TOKEN = 'e3878f719b4bc9b0696f9f1f80202eb8'
 
 
 if __name__ == '__main__':
-    millingMachine = Machine(MILLING_ID, MILLING_TOKEN)
+    millingMachine = Machine('machine', MILLING_TOKEN)
     latheMachine = Machine(LATHE_ID, LATHE_TOKEN)
     millingRobot = Robot(MILLING_ROBOT_ID, MILLING_ROBOT_TOKEN)
     latheRobot = Robot(LATHE_ROBOT_ID, LATHE_ROBOT_TOKEN)

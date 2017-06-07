@@ -38,7 +38,7 @@ public class ClientController extends Controller {
     }
 
     Order order = new Order(detail, body.amount, body.amount);
-    taskService.addTask(order);
+    taskService.addOrder(order);
     return ResponseEntity.ok().body("ok");
   }
 }

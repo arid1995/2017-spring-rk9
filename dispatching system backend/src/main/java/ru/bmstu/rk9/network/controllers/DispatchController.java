@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
-import ru.bmstu.rk9.network.entities.ProductionTaskEntity;
-import ru.bmstu.rk9.network.services.MessageHandlerService;
+import ru.bmstu.rk9.network.entities.FeedbackMessageEntity;
 import ru.bmstu.rk9.network.services.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +22,38 @@ import java.util.logging.Logger;
 @RequestMapping("/api/dispatch")
 public class DispatchController extends Controller {
 
-  private final MessageHandlerService messageHandlerService;
+  private final TaskService taskService;
   private final AtomicLong counter = new AtomicLong(0);
   private ObjectMapper mapper = new ObjectMapper();
 
   @Autowired
-  public DispatchController(MessageHandlerService messageHandlerService, TaskService taskService) {
-    this.messageHandlerService = messageHandlerService;
+  public DispatchController(TaskService taskService) {
+    this.taskService = taskService;
   }
 
-  @RequestMapping(path = "/request", method = RequestMethod.POST)
-  public ResponseEntity dispatch() {
-    return ResponseEntity.ok().body(counter);
+  @RequestMapping(path = "/machine", method = RequestMethod.POST)
+  public ResponseEntity handleMachineMessage(@RequestBody FeedbackMessageEntity body) {
+    System.out.print("I think I just came!");
+    taskService.handleMessage(body);
+    return ResponseEntity.ok("ok");
+  }
+
+  @RequestMapping(path = "/robot", method = RequestMethod.POST)
+  public ResponseEntity handleRobotMessage(@RequestBody FeedbackMessageEntity body) {
+    taskService.handleMessage(body);
+    return ResponseEntity.ok("ok");
+  }
+
+  @RequestMapping(path = "/conveyor", method = RequestMethod.POST)
+  public ResponseEntity handleConveyorMessage(@RequestBody FeedbackMessageEntity body) {
+    taskService.handleMessage(body);
+    return ResponseEntity.ok("ok");
+  }
+
+  @RequestMapping(path = "/stacker", method = RequestMethod.POST)
+  public ResponseEntity handleStackerMessage(@RequestBody FeedbackMessageEntity body) {
+    taskService.handleMessage(body);
+    return ResponseEntity.ok("ok");
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)

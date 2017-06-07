@@ -13,6 +13,7 @@ import ru.bmstu.rk9.mechanics.models.Stock;
 import ru.bmstu.rk9.mechanics.models.SystemState;
 
 import java.util.ArrayList;
+import ru.bmstu.rk9.network.entities.FeedbackMessage;
 
 /**
  * Created by farid on 4/29/17.
@@ -53,6 +54,10 @@ public class Dispatcher {
   }
 
   public void save() {
+
+  }
+
+  public void handleMessage(FeedbackMessage message, String messageTypeId) {
 
   }
 

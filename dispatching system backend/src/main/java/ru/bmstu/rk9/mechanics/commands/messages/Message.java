@@ -10,19 +10,20 @@ import java.util.Date;
  */
 
 public abstract class Message {
-    public long getTimestamp(){
-        long timestamp = System.currentTimeMillis()/1000;
-        return  timestamp;
-    }
 
-    private static final ObjectMapper message = new ObjectMapper();
+  public long getTimestamp() {
+    long timestamp = System.currentTimeMillis() / 1000;
+    return timestamp;
+  }
 
-    public String toJson() {
-        try {
-            return message.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+  private static final ObjectMapper message = new ObjectMapper();
+
+  public String toJson() {
+    try {
+      return message.writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+      return null;
     }
+  }
 }

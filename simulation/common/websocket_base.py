@@ -5,7 +5,7 @@ import threading
 
 
 class Websocket(metaclass=ABCMeta):
-    __base_url = 'wss://iotmmsp1942516588trial.hanatrial.ondemand.com/com.sap.iotservices.mms/v1/api/ws/data/'
+    __base_url = 'ws://37.204.2.4:8080/'
 
     def __init__(self, wsId, wsToken):
         self.ws = websocket.WebSocketApp(
