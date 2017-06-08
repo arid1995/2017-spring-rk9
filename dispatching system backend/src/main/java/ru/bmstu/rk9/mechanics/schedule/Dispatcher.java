@@ -8,6 +8,7 @@ import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
 import ru.bmstu.rk9.mechanics.models.Conveyor;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Order;
+import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.Stock;
@@ -39,7 +40,6 @@ public class Dispatcher {
     stock = new Stock(STOCK_CAPACITY, STOCK_CAPACITY);
     orders = new OrderDao().getUnfinishedOrders();
     reschedule();
-    start();
   }
 
   public void setWebSocketSession(String deviceId, WebSocketSession session) {
@@ -72,7 +72,7 @@ public class Dispatcher {
     }
   }
 
-  public void addTask(Order order) {
+  public void addOrder(Order order) {
     orders.add(order);
     reschedule();
   }
@@ -86,7 +86,22 @@ public class Dispatcher {
   }
 
   public void handleMachineMessage(FeedbackMessage message) {
+    Machine machine = null;
 
+    for (Machine value : machines) {
+      if (value.getDeviceStringId().equals(message.getDeviceId())) {
+        System.out.println("Message received");
+        machine = value;
+        break;
+      }
+    }
+
+    if (machine == null) {
+      return;
+    }
+    machine.executeTransaction();
+    systemStateDao.persist(systemState);
+    generateNextCommand();
   }
 
   public void handleRobotMessage(FeedbackMessage message) {
@@ -97,11 +112,24 @@ public class Dispatcher {
 
   }
 
-  public void handleStackerMessage(FeedbackMessage message) {
-
+  public void start() {
+    isWorking = true;
+    generateNextCommand();
   }
 
-  private void start() {
+  public void stop() {
+    isWorking = false;
+  }
+
+  public void handleStackerMessage(FeedbackMessage message) {
+    stacker.executeTransaction();
+    System.out.println(message.getDeviceId());
+  }
+
+  private void generateNextCommand() {
+    if (!isWorking) {
+      return;
+    }
     stacker.putPalletOnConveyor(stock.getNextPallet());
   }
 

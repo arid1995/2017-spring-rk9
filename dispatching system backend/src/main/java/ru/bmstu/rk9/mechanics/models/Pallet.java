@@ -18,7 +18,7 @@ public class Pallet {
     this.capacity = capacity > 0 ? capacity : 1;
     this.id = id;
 
-    currentCount = capacity;
+    currentCount = 0;
   }
 
   public Billet take() {

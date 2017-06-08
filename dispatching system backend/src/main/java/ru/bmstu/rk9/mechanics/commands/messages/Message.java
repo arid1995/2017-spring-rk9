@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class Message {
+  private long timestamp;
+  private static final ObjectMapper message = new ObjectMapper();
 
-  public long getTimestamp() {
-    long timestamp = System.currentTimeMillis() / 1000;
-    return timestamp;
+  public Message() {
+    timestamp = System.currentTimeMillis() / 1000;
   }
 
-  private static final ObjectMapper message = new ObjectMapper();
+  public long getTimestamp() {
+    return timestamp;
+  }
 
   public String toJson() {
     try {

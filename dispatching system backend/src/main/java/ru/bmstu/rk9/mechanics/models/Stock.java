@@ -14,6 +14,7 @@ public class Stock {
 
     for (int i = 0; i < palletCount; i++) {
       Pallet pallet = new Pallet(2, i);
+      pallets.add(pallet);
     }
     details = new ArrayList<>();
   }

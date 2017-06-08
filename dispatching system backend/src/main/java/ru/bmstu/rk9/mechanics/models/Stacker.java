@@ -1,6 +1,8 @@
 package ru.bmstu.rk9.mechanics.models;
 
 import ru.bmstu.rk9.mechanics.commands.ConveyorCommand;
+import ru.bmstu.rk9.mechanics.commands.StackerCommand;
+import ru.bmstu.rk9.mechanics.commands.messages.StackerMessage;
 
 public class Stacker extends Device {
 
@@ -9,10 +11,9 @@ public class Stacker extends Device {
   }
 
   public void putPalletOnConveyor(Pallet pallet) {
-    transaction = () -> {
-      pallet.removeFromOrder();
-      sendMessageToDevice(new ConveyorCommand());
-    };
+    StackerMessage message = new StackerMessage();
+    sendMessageToDevice(new StackerCommand(message));
+    transaction = pallet::removeFromOrder;
   }
 
   public void takePalletFromConveyor(Billet billet) {

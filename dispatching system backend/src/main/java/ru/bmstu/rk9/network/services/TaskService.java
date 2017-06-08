@@ -3,6 +3,7 @@ package ru.bmstu.rk9.network.services;
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
+import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.schedule.Dispatcher;
 import ru.bmstu.rk9.network.entities.FeedbackMessage;
@@ -14,7 +15,9 @@ public class TaskService {
   private Dispatcher dispatcher = new Dispatcher();
 
   public void addOrder(Order order) {
-    dispatcher.addTask(order);
+    //dispatcher.addOrder(order);
+    OrderDao orderDao = new OrderDao();
+    orderDao.persist(order);
   }
 
   public ArrayList<Order> getTaskQueue() {
@@ -47,6 +50,14 @@ public class TaskService {
 
   public void setWebSocketSession(String deviceId, WebSocketSession session) {
     dispatcher.setWebSocketSession(deviceId, session);
+  }
+
+  public void startDispatching() {
+    dispatcher.start();
+  }
+
+  public void stopDispatching() {
+    dispatcher.stop();
   }
 
   public void reload() {

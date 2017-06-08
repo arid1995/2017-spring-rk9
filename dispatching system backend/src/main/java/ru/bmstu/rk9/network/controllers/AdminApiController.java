@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.network.controllers;
 
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,10 +21,18 @@ import ru.bmstu.rk9.network.entities.MachineEntity;
 import ru.bmstu.rk9.network.entities.ProcessEntity;
 import ru.bmstu.rk9.network.entities.ProcessToMachineEntity;
 import ru.bmstu.rk9.network.entities.RobotEntity;
+import ru.bmstu.rk9.network.services.TaskService;
 
 @RestController
 @RequestMapping("api/admin")
 public class AdminApiController extends Controller {
+
+  final TaskService taskService;
+
+  @Autowired
+  public AdminApiController(TaskService taskService) {
+    this.taskService = taskService;
+  }
 
   @RequestMapping(path = "/machine", method = RequestMethod.POST)
   public ResponseEntity addMachine(@RequestBody MachineEntity body) {
@@ -85,6 +94,18 @@ public class AdminApiController extends Controller {
     DetailDao detailDao = new DetailDao();
     detailDao.persist(detail);
 
+    return ResponseEntity.ok().body("ok");
+  }
+
+  @RequestMapping(path = "/start", method = RequestMethod.POST)
+  public ResponseEntity startDispatching() {
+    taskService.startDispatching();
+    return ResponseEntity.ok().body("ok");
+  }
+
+  @RequestMapping(path = "/stop", method = RequestMethod.POST)
+  public ResponseEntity stopDispatching() {
+    taskService.stopDispatching();
     return ResponseEntity.ok().body("ok");
   }
 }
