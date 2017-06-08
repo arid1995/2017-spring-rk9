@@ -7,13 +7,7 @@ import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.schedule.Dispatcher;
 import ru.bmstu.rk9.network.entities.FeedbackMessage;
 import ru.bmstu.rk9.network.entities.FeedbackMessageEntity;
-import ru.bmstu.rk9.network.entities.ProductionTaskEntity;
 
-import java.util.PriorityQueue;
-
-/**
- * Created by farid on 5/2/17.
- */
 @Service
 public class TaskService {
 

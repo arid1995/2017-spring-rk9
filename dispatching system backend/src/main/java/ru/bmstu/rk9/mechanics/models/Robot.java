@@ -2,9 +2,6 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by farid on 5/2/17.
- */
 public class Robot extends Device {
 
   private Integer robotId;

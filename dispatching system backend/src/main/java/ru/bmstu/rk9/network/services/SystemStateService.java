@@ -2,15 +2,12 @@ package ru.bmstu.rk9.network.services;
 
 import org.springframework.stereotype.Service;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
-import ru.bmstu.rk9.mechanics.models.*;
+import ru.bmstu.rk9.mechanics.models.Conveyor;
+import ru.bmstu.rk9.mechanics.models.Machine;
+import ru.bmstu.rk9.mechanics.models.Robot;
+import ru.bmstu.rk9.mechanics.models.Stacker;
+import ru.bmstu.rk9.mechanics.models.Stock;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- * Created by farid on 4/21/17.
- */
 @Service
 public class SystemStateService {
 

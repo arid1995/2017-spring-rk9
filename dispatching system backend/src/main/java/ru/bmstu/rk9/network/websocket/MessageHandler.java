@@ -6,9 +6,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import ru.bmstu.rk9.network.services.TaskService;
 
-/**
- * Created by farid on 6/8/17.
- */
 public class MessageHandler extends TextWebSocketHandler {
   protected final TaskService taskService;
   protected final ObjectMapper mapper = new ObjectMapper();

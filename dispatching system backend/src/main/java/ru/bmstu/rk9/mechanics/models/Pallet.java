@@ -4,9 +4,6 @@ import ru.bmstu.rk9.mechanics.exceptions.MaximumCapacityException;
 
 import java.util.HashMap;
 
-/**
- * Created by farid on 5/2/17.
- */
 public class Pallet {
 
   private int capacity;

@@ -3,11 +3,7 @@ package ru.bmstu.rk9.mechanics.commands;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
-import ru.bmstu.rk9.mechanics.commands.messages.ConveyorMessage;
 
-/**
- * Created by farid on 4/21/17.
- */
 public abstract class Command <T> {
     private final String method = "http";
     private final String sender = "My IoT application";

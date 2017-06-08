@@ -14,9 +14,6 @@ import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.network.entities.OrderEntity;
 import ru.bmstu.rk9.network.services.TaskService;
 
-/**
- * Created by farid on 5/14/17.
- */
 @RestController
 @RequestMapping(path = "")
 public class ClientController extends Controller {

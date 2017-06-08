@@ -1,20 +1,11 @@
 package ru.bmstu.rk9.mechanics.models;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.commands.Command;
-
-/**
- * Created by farid on 5/2/17.
- */
 
 public abstract class Device {
 

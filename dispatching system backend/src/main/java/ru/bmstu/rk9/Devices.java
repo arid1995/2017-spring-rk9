@@ -1,10 +1,5 @@
 package ru.bmstu.rk9;
 
-import java.util.concurrent.ConcurrentHashMap;
-
-/**
- * Created by farid on 4/7/17.
- */
 public class Devices {
 
   public static final String MILLING_MACHINE = "9bbf29a1-544a-4f7d-b978-71a5e6beba1d";

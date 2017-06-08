@@ -9,10 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.TableManager;
 
-/**
- * Created by farid on 3/24/17.
- */
-
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 

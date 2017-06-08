@@ -1,25 +1,19 @@
 package ru.bmstu.rk9.mechanics.schedule;
 
+import java.util.ArrayList;
 import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.dao.Dao;
 import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
-import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Conveyor;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Order;
-import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.Stock;
 import ru.bmstu.rk9.mechanics.models.SystemState;
-
-import java.util.ArrayList;
 import ru.bmstu.rk9.network.entities.FeedbackMessage;
 
-/**
- * Created by farid on 4/29/17.
- */
 public class Dispatcher {
 
   private boolean isWorking = false;

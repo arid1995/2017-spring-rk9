@@ -2,11 +2,7 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by farid on 5/11/17.
- */
 public class SystemState {
   private Integer systemStateId;
   private Timestamp created;

@@ -11,9 +11,6 @@ import ru.bmstu.rk9.network.websocket.MachineMessageHandler;
 import ru.bmstu.rk9.network.websocket.RobotMessageHandler;
 import ru.bmstu.rk9.network.websocket.StackerMessageHandler;
 
-/**
- * Created by farid on 6/7/17.
- */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {

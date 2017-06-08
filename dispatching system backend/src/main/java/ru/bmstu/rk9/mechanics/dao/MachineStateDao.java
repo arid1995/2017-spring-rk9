@@ -8,9 +8,6 @@ import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Machine;
 import ru.bmstu.rk9.mechanics.models.Process;
 
-/**
- * Created by farid on 5/12/17.
- */
 public class MachineStateDao implements Dao<Machine> {
 
   public ArrayList<Machine> getByStateId(int id) {

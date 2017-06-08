@@ -18,13 +18,9 @@ import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.network.entities.DetailEntity;
 import ru.bmstu.rk9.network.entities.MachineEntity;
 import ru.bmstu.rk9.network.entities.ProcessEntity;
-import ru.bmstu.rk9.network.entities.ProcessToDetailEntity;
 import ru.bmstu.rk9.network.entities.ProcessToMachineEntity;
 import ru.bmstu.rk9.network.entities.RobotEntity;
 
-/**
- * Created by farid on 5/11/17.
- */
 @RestController
 @RequestMapping("api/admin")
 public class AdminApiController extends Controller {

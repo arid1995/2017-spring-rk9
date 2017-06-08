@@ -8,9 +8,6 @@ import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Robot;
 
-/**
- * Created by farid on 5/11/17.
- */
 public class RobotDao implements Dao<Robot> {
 
   private static AtomicInteger idGenerator = new AtomicInteger(-1);

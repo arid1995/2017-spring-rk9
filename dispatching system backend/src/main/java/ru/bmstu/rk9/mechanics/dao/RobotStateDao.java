@@ -1,18 +1,12 @@
 package ru.bmstu.rk9.mechanics.dao;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Robot;
-import ru.bmstu.rk9.mechanics.models.Stacker;
-import ru.bmstu.rk9.mechanics.models.SystemState;
 
-/**
- * Created by farid on 5/12/17.
- */
 public class RobotStateDao implements Dao<Robot> {
   public ArrayList<Robot> getByStateId(int id) {
     try {

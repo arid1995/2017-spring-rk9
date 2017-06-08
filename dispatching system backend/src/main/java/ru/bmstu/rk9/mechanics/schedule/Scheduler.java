@@ -2,14 +2,10 @@ package ru.bmstu.rk9.mechanics.schedule;
 
 import java.util.ArrayList;
 import ru.bmstu.rk9.mechanics.models.Billet;
-import ru.bmstu.rk9.mechanics.models.Detail;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Stock;
 
-/**
- * Created by farid on 5/15/17.
- */
 public class Scheduler {
 
   public void schedulePalletsInStock(ArrayList<Order> orders, Stock stock) {

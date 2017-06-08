@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 import ru.bmstu.rk9.database.Database;
 
-/**
- * Created by farid on 5/12/17.
- */
 public class Utils {
 
   private static AtomicInteger idGenerator = new AtomicInteger(-1);

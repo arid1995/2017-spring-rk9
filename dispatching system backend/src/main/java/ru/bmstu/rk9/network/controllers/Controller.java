@@ -8,9 +8,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-/**
- * Created by farid on 5/9/17.
- */
 public abstract class Controller {
 
   private ObjectMapper mapper = new ObjectMapper();

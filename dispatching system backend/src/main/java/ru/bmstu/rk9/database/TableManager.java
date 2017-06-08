@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by farid on 4/7/17.
- */
 public class TableManager {
 
   private ArrayList<String> queries = new ArrayList<>();

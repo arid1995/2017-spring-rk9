@@ -1,8 +1,5 @@
 package ru.bmstu.rk9.mechanics.models;
 
-/**
- * Created by farid on 5/11/17.
- */
 public class Order {
   private Integer orderId;
   private Detail detail;

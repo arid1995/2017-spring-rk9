@@ -9,9 +9,6 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * Created by farid on 4/7/17.
- */
 public class DatasourceAdapter {
     private static DataSource hanaDataSource = null;
     private static ComboPooledDataSource desktopDataSource = null;

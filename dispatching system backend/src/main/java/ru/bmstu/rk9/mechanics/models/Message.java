@@ -2,9 +2,6 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.sql.Timestamp;
 
-/**
- * Created by farid on 5/11/17.
- */
 public class Message {
   private Integer messageId;
   private Timestamp created;

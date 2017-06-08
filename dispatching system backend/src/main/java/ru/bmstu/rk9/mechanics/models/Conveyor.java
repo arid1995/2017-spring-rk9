@@ -1,11 +1,7 @@
 package ru.bmstu.rk9.mechanics.models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by farid on 5/2/17.
- */
 public class Conveyor extends Device {
   private HashMap<Integer, Pallet> pallets = new HashMap<>();
 

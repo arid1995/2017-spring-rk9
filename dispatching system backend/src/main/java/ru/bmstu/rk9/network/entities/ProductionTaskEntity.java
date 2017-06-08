@@ -3,9 +3,6 @@ package ru.bmstu.rk9.network.entities;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by farid on 5/2/17.
- */
 public class ProductionTaskEntity implements Comparable<ProductionTaskEntity> {
     @NotNull
     @Min(1)

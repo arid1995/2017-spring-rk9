@@ -13,9 +13,6 @@ import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.SystemState;
 
-/**
- * Created by farid on 4/21/17.
- */
 public class SystemStateDao implements Dao<SystemState> {
 
   private static AtomicInteger idGenerator = new AtomicInteger(-1);

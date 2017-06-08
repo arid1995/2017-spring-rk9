@@ -9,9 +9,6 @@ import ru.bmstu.rk9.database.Database;
 import ru.bmstu.rk9.mechanics.models.Detail;
 import ru.bmstu.rk9.mechanics.models.Order;
 
-/**
- * Created by farid on 5/11/17.
- */
 public class OrderDao implements Dao<Order> {
   private static AtomicInteger idGenerator = new AtomicInteger(-1);
 

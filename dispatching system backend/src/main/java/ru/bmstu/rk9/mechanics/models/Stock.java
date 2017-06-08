@@ -2,9 +2,6 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.util.ArrayList;
 
-/**
- * Created by farid on 5/2/17.
- */
 public class Stock {
 
   private ArrayList<Pallet> pallets;
