@@ -32,12 +32,12 @@ class Machine(Websocket):
 
     def __executeCommand(self, message):
         time.sleep(self.__COLLET_OPEN_CLOSE_DURATION)
-        feedback = FeedbackMessage(self.__SUCCESS_STATUS)
+        feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
         print(feedback.toJson())
 
     def __runProgram(self, message):
         time.sleep(self.__PROGRAM_EXECUTION_DURATION)
-        feedback = FeedbackMessage(self.__SUCCESS_STATUS)
+        feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
         print(feedback.toJson())

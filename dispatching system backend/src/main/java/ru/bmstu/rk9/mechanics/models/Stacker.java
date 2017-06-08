@@ -8,7 +8,7 @@ import ru.bmstu.rk9.mechanics.commands.ConveyorCommand;
 public class Stacker extends Device {
 
   public Stacker(Integer deviceId, Integer state) {
-    super(deviceId, "saf", "asf");
+    super(deviceId, "f4812d51-d523-4b9b-a1a7-bdc501d37104", "stacker");
   }
 
   public void putPalletOnConveyor(Pallet pallet) {

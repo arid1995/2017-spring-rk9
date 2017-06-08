@@ -2,6 +2,7 @@ package ru.bmstu.rk9.network.services;
 
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.models.Order;
 import ru.bmstu.rk9.mechanics.schedule.Dispatcher;
 import ru.bmstu.rk9.network.entities.FeedbackMessage;
@@ -26,10 +27,32 @@ public class TaskService {
     return dispatcher.getOrders();
   }
 
-  public void handleMessage(FeedbackMessageEntity messageEntity) {
+  public void handleMachineMessage(FeedbackMessageEntity messageEntity) {
     for (FeedbackMessage message : messageEntity.getMessages()) {
-      dispatcher.handleMessage(message, messageEntity.getMessageType());
+      dispatcher.handleMachineMessage(message);
     }
+  }
+
+  public void handleRobotMessage(FeedbackMessageEntity messageEntity) {
+    for (FeedbackMessage message : messageEntity.getMessages()) {
+      dispatcher.handleRobotMessage(message);
+    }
+  }
+
+  public void handleStackerMessage(FeedbackMessageEntity messageEntity) {
+    for (FeedbackMessage message : messageEntity.getMessages()) {
+      dispatcher.handleStackerMessage(message);
+    }
+  }
+
+  public void handleConveyorMessage(FeedbackMessageEntity messageEntity) {
+    for (FeedbackMessage message : messageEntity.getMessages()) {
+      dispatcher.handleConveyorMessage(message);
+    }
+  }
+
+  public void setWebSocketSession(String deviceId, WebSocketSession session) {
+    dispatcher.setWebSocketSession(deviceId, session);
   }
 
   public void reload() {

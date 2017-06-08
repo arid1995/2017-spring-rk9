@@ -91,6 +91,7 @@ Commands stacker to place pallet from conveyor in the stock or on conveyor from 
 ### Fields:
 timestamp - time of creation;<br>
 status - status of operation
+deviceId - id of device that sent it
 
 | Status         | Value |
 |----------------|-------|

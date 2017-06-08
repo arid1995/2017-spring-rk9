@@ -4,9 +4,12 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.commands.Command;
 
 /**
@@ -22,6 +25,7 @@ public abstract class Device {
   protected Integer state;
   protected Integer stateId;
   protected Runnable transaction;
+  protected WebSocketSession session;
 
   public Device(String deviceStringId, String deviceName) {
     this.deviceStringId = deviceStringId;
@@ -42,18 +46,13 @@ public abstract class Device {
 
   public void sendMessageToDevice(Command command) {
     try {
-      HttpResponse<JsonNode> jsonResponse =
-          Unirest.post(
-              "https://iotmmsp1942516588trial.hanatrial.ondemand.com/com.sap.iotservices.mms/v1/api/http/push/"
-                  + deviceStringId)
-              .basicAuth("arid1995@mail.ru", "Tank1995")
-              .header("Content-Type", "application/json; charset=utf-8")
-              .body(command.toJson())
-              .asJson();
-
-      System.out.println(jsonResponse.getBody().toString());
-      System.out.println(command.toJson());
-    } catch (UnirestException ex) {
+      if (session != null) {
+        session.sendMessage(new TextMessage(command.toJson()));
+        System.out.println(command.toJson());
+        return;
+      }
+      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, "Websocket session is not initialized");
+    } catch (IOException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
     }
   }
@@ -106,5 +105,9 @@ public abstract class Device {
 
   public void setStateId(Integer stateId) {
     this.stateId = stateId;
+  }
+
+  public void setSession(WebSocketSession session) {
+    this.session = session;
   }
 }

@@ -23,7 +23,7 @@ public class Application extends SpringBootServletInitializer {
 
   public static void main(String... args) {
     TableManager tableManager = new TableManager();
-    //tableManager.createTables();
+    tableManager.createTables();
 
     SpringApplication.run(Application.class, args);
 
