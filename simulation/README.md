@@ -81,6 +81,11 @@ timestamp - time of creation;<br>
 action - action to perform;<br>
 cellNumber - to which cell to put or from which to take pallet;
 
+| Action                       | Value |
+|------------------------------|-------|
+|Take From the stock           |0      |
+|Put in the stock              |1      |
+
 #### Description
 Commands stacker to place pallet from conveyor in the stock or on conveyor from the stock
 

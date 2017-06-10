@@ -42,7 +42,8 @@ public abstract class Device {
         System.out.println(command.toJson());
         return;
       }
-      Logger.getLogger(Logger.class.getName()).log(Level.WARNING, "Websocket session is not initialized");
+      Logger.getLogger(Logger.class.getName())
+          .log(Level.WARNING, "Websocket session is not initialized");
     } catch (IOException ex) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
     }
@@ -52,10 +53,6 @@ public abstract class Device {
     if (transaction != null) {
       transaction.run();
     }
-  }
-
-  public void actionReady() {
-    executeTransaction();
   }
 
   public String getDeviceStringId() {

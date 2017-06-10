@@ -2,13 +2,15 @@ package ru.bmstu.rk9.mechanics.schedule;
 
 import java.util.ArrayList;
 import org.springframework.web.socket.WebSocketSession;
+import ru.bmstu.rk9.mechanics.commands.Command;
+import ru.bmstu.rk9.mechanics.commands.messages.ConveyorMessage;
 import ru.bmstu.rk9.mechanics.dao.Dao;
 import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
 import ru.bmstu.rk9.mechanics.models.Conveyor;
 import ru.bmstu.rk9.mechanics.models.Machine;
+import ru.bmstu.rk9.mechanics.models.Message;
 import ru.bmstu.rk9.mechanics.models.Order;
-import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Robot;
 import ru.bmstu.rk9.mechanics.models.Stacker;
 import ru.bmstu.rk9.mechanics.models.Stock;
@@ -105,11 +107,28 @@ public class Dispatcher {
   }
 
   public void handleRobotMessage(FeedbackMessage message) {
+    Robot robot = null;
 
+    for (Robot value : robots) {
+      if (value.getDeviceStringId().equals(message.getDeviceId())) {
+        System.out.println("Message received");
+        robot = value;
+        break;
+      }
+    }
+
+    if (robot == null) {
+      return;
+    }
+    robot.executeTransaction();
+    systemStateDao.persist(systemState);
+    generateNextCommand();
   }
 
   public void handleConveyorMessage(FeedbackMessage message) {
-
+    conveyor.executeTransaction();
+    systemStateDao.persist(systemState);
+    System.out.println(message.getDeviceId());
   }
 
   public void start() {
@@ -123,6 +142,7 @@ public class Dispatcher {
 
   public void handleStackerMessage(FeedbackMessage message) {
     stacker.executeTransaction();
+    systemStateDao.persist(systemState);
     System.out.println(message.getDeviceId());
   }
 
@@ -131,6 +151,11 @@ public class Dispatcher {
       return;
     }
     stacker.putPalletOnConveyor(stock.getNextPallet());
+    Command<Message> command = determineNextCommand();
+  }
+
+  private Command<Message> determineNextCommand() {
+
   }
 
   private void reschedule() {
