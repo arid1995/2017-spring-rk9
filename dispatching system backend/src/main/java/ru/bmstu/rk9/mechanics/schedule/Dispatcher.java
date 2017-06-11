@@ -1,12 +1,14 @@
 package ru.bmstu.rk9.mechanics.schedule;
 
 import java.util.ArrayList;
+import javafx.util.Pair;
 import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.commands.Command;
 import ru.bmstu.rk9.mechanics.commands.messages.Message;
 import ru.bmstu.rk9.mechanics.dao.Dao;
 import ru.bmstu.rk9.mechanics.dao.OrderDao;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
+import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.devices.Conveyor;
 import ru.bmstu.rk9.mechanics.models.devices.Machine;
 import ru.bmstu.rk9.mechanics.models.Order;
@@ -26,6 +28,7 @@ public class Dispatcher {
   private final Stock stock;
   private final SystemState systemState;
   private ArrayList<Order> orders = new ArrayList<>();
+  private boolean isSequenceStarted = false;
   Scheduler scheduler = new Scheduler();
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();
@@ -145,17 +148,96 @@ public class Dispatcher {
     System.out.println(message.getDeviceId());
   }
 
+  //TODO: find a way to continue squence
   private void generateNextCommand() {
     if (!isWorking) {
       return;
     }
     stacker.putPalletOnConveyor(stock.getNextPallet());
-    Command<Message> command = determineNextCommand();
+    Command<Message> command = determineCommandByProductionRules();
   }
 
-  private Command<Message> determineNextCommand() {
+  private Command<Message> determineCommandByProductionRules() {
+    Command<Message> command = null;
 
+    ArrayList<Machine> finishedMachines = getMachinesWithState(Machine.FINISHED);
+    ArrayList<Machine> freeMachines = getMachinesWithState(Machine.FREE);
+
+    //Are there finished machines
+    if (!finishedMachines.isEmpty()) {
+      Machine finishedMachine = finishedMachines.remove(0);
+      Robot robot = getRobotIfFree(finishedMachine.getMachineId());
+      if (robot != null) {
+        finishedMachine.openCollet();
+        //TODO: what's next???
+      }
+    } else {
+      //Are there free machines
+      if (!freeMachines.isEmpty()) {
+        //Are there pallets that free machine can handle
+        if (conveyor.hasPallets()) {
+          Pair<Machine, Pallet> suitablePallet = getSuitablePalletOnConveyor(freeMachines);
+          if (suitablePallet != null) {
+            Pallet pallet = suitablePallet.getValue();
+            Machine machine = suitablePallet.getKey();
+            Robot robot = getRobotIfFree(machine.getMachineId());
+            //Is robot free
+            if (robot != null) {
+              //TODO: what's next???
+              conveyor.movePallet(pallet.getId(), machine.getMachineId());
+            }
+          }
+        } else {
+          Integer cellNumber = getSuitablePalletInStock(freeMachines);
+          if (cellNumber != null) {
+            stacker.takeFromTheCell(cellNumber);
+          }
+        }
+      }
+    }
+    return command;
   }
+
+  private ArrayList<Machine> getMachinesWithState(Integer state) {
+    ArrayList<Machine> machinesWithState = new ArrayList<>();
+    for (Machine machine : machines) {
+      if (machine.getState().equals(state)) {
+        machinesWithState.add(machine);
+      }
+    }
+    return machinesWithState;
+  }
+
+  private Robot getRobotIfFree(int robotId) {
+    for (Robot robot : robots) {
+      if (robot.getRobotId().equals(robotId)) {
+        return robot;
+      }
+    }
+    return null;
+  }
+
+  private Pair<Machine, Pallet> getSuitablePalletOnConveyor(ArrayList<Machine> machines) {
+    for (Machine machine : machines) {
+      Pallet pallet = conveyor.findMatchingPallet(machine);
+      if (pallet != null) {
+        return new Pair<Machine, Pallet>(machine, pallet);
+      }
+    }
+    return null;
+  }
+
+  private Integer getSuitablePalletInStock(ArrayList<Machine> machines) {
+    for (Machine machine : machines) {
+      Integer palletNumber = null;
+      palletNumber = stock.findMatchingPalletCell(machine);
+      if (palletNumber != null) {
+        return 0;
+      }
+    }
+    return null;
+  }
+
 
   private void reschedule() {
     scheduler.schedulePalletsInStock(orders, stock);

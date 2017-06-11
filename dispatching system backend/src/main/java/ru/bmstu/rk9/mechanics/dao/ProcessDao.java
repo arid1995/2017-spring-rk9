@@ -3,6 +3,7 @@ package ru.bmstu.rk9.mechanics.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,19 +59,19 @@ public class ProcessDao implements Dao<Process> {
     }
   }
 
-  private ArrayList<Process> fillProcessesFromResultSet(ResultSet result) throws SQLException {
-    ArrayList<Process> processes = new ArrayList<>();
+  private HashMap<String, Process> fillProcessesFromResultSet(ResultSet result) throws SQLException {
+    HashMap<String, Process> processes = new HashMap<>();
     while (result.next()) {
       String programName = result.getString("program_name");
       Integer processId = result.getInt("process_id");
       Integer duration = result.getInt("duration");
 
-      processes.add(new Process(processId, programName, duration));
+      processes.put(programName, new Process(processId, programName, duration));
     }
     return processes;
   }
 
-  public ArrayList<Process> getByDetailId(int detailId) {
+  public HashMap<String, Process> getByDetailId(int detailId) {
     try {
       return Database.select("SELECT * FROM process AS p INNER JOIN process_to_detail AS ptd"
               + " ON p.process_id=ptd.process_id WHERE"
@@ -82,7 +83,7 @@ public class ProcessDao implements Dao<Process> {
     }
   }
 
-  public ArrayList<Process> getByMachineId(int machineId) {
+  public HashMap<String, Process> getByMachineId(int machineId) {
     try {
       return Database.select("SELECT * FROM process AS p INNER JOIN machine_to_process AS mtp"
           + " ON p.process_id=mtp.process_id WHERE"

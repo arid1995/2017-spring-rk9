@@ -26,7 +26,6 @@ public class Pallet {
       currentCount--;
       return billets.get(currentCount);
     }
-
     return null;
   }
 
@@ -45,6 +44,10 @@ public class Pallet {
 
     billets.put(currentCount, billet);
     currentCount++;
+  }
+
+  public HashMap<Integer, Billet> getBillets() {
+    return billets;
   }
 
   public void setKey(Integer key) {

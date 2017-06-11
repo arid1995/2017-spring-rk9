@@ -1,21 +1,30 @@
 package ru.bmstu.rk9.mechanics.models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Billet {
-  private ArrayList<Process> processes;
+  private LinkedList<Process> processes;
   private Integer palletId;
 
   public Billet(Detail detail, Integer palletId) {
-    this.processes = new ArrayList<>(detail.getProcesses());
+    this.processes = new LinkedList<>(detail.getProcesses());
     this.palletId = palletId;
   }
 
-  public ArrayList<Process> getProcesses() {
+  public LinkedList<Process> getProcesses() {
     return processes;
   }
 
   public Integer getPalletId() {
     return palletId;
+  }
+
+  public Process popNextProcess() {
+    return processes.poll();
+  }
+
+  public Process getNextProcess() {
+    return processes.peek();
   }
 }

@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.mechanics.models.devices;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import ru.bmstu.rk9.mechanics.commands.MachineCommand;
 import ru.bmstu.rk9.mechanics.commands.MachineProcessCommand;
 import ru.bmstu.rk9.mechanics.commands.messages.MachineMessage;
@@ -19,7 +20,7 @@ public class Machine extends Device {
 
   private Integer machineId;
   private String machineType;
-  private ArrayList<Process> technicalProcesses = new ArrayList<>();
+  private HashMap<String, Process> technicalProcesses = new HashMap<>();
 
   public Machine(String deviceStringId, String deviceName, String machineType) {
     super(deviceStringId, deviceName);
@@ -28,7 +29,7 @@ public class Machine extends Device {
 
   public Machine(Integer deviceId, String deviceStringId, String deviceName,
       Integer machineId, String machineType,
-      ArrayList<Process> technicalProcesses) {
+      HashMap<String, Process> technicalProcesses) {
     super(deviceId, deviceStringId, deviceName);
     this.machineId = machineId;
     this.machineType = machineType;
@@ -37,7 +38,7 @@ public class Machine extends Device {
 
   public Machine(Integer deviceId, String deviceStringId, String deviceName, Integer state,
       Integer machineId, String machineType,
-      ArrayList<Process> technicalProcesses) {
+      HashMap<String, Process> technicalProcesses) {
     super(deviceId, deviceStringId, deviceName, state);
     this.machineId = machineId;
     this.machineType = machineType;
@@ -52,7 +53,7 @@ public class Machine extends Device {
     return machineType;
   }
 
-  public ArrayList<Process> getTechnicalProcesses() {
+  public HashMap<String, Process> getTechnicalProcesses() {
     return technicalProcesses;
   }
 
@@ -60,14 +61,13 @@ public class Machine extends Device {
     this.machineId = machineId;
   }
 
-  public void setTechnicalProcesses(
-      ArrayList<Process> technicalProcesses) {
+  public void setTechnicalProcesses(HashMap<String, Process> technicalProcesses) {
     this.technicalProcesses = technicalProcesses;
   }
 
   public void startProcess(Billet billet) {
     MachineProcessMessage message = new MachineProcessMessage();
-    message.setProgramName(billet.getProcesses().remove(0).getProgramName());
+    message.setProgramName(billet.popNextProcess().getProgramName());
     MachineProcessCommand command = new MachineProcessCommand(message);
     sendMessageToDevice(command);
     transaction = () -> {
@@ -75,7 +75,7 @@ public class Machine extends Device {
     };
   }
 
-  private void openCollet() {
+  public void openCollet() {
     MachineMessage message = new MachineMessage();
     message.openCollet();
     MachineCommand command = new MachineCommand(message);
@@ -85,7 +85,7 @@ public class Machine extends Device {
     };
   }
 
-  private void closeCollet() {
+  public void closeCollet() {
     MachineMessage message = new MachineMessage();
     message.closeCollet();
     MachineCommand command = new MachineCommand(message);
@@ -93,5 +93,9 @@ public class Machine extends Device {
     transaction = () -> {
       state = BUSY;
     };
+  }
+
+  public boolean hasProgram(String name) {
+    return technicalProcesses.get(name) != null;
   }
 }

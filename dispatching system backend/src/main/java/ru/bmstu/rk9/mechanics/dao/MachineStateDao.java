@@ -2,6 +2,7 @@ package ru.bmstu.rk9.mechanics.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
@@ -26,7 +27,7 @@ public class MachineStateDao implements Dao<Machine> {
           String deviceName = result.getString("ddn");
           int machineState = result.getInt("msms");
 
-          ArrayList<Process> processes = new ProcessDao().getByMachineId(machineId);
+          HashMap<String, Process> processes = new ProcessDao().getByMachineId(machineId);
 
           Machine machine = new Machine(deviceId, deviceStringId, deviceName, machineState,
               machineId, machineType, processes

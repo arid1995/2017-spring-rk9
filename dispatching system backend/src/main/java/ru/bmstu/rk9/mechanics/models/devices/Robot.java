@@ -6,6 +6,8 @@ import ru.bmstu.rk9.mechanics.models.Pallet;
 
 public class Robot extends Device {
 
+  public static final int FREE = 0;
+  public static final int BUSY = 1;
   private Integer robotId;
 
   public Robot(String deviceStringId, String deviceName) {

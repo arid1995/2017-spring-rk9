@@ -29,7 +29,7 @@ public class Stacker extends Device {
     };
   }
 
-  public void takeFromTheCell(Pallet pallet, int cellNumber) {
+  public void takeFromTheCell(int cellNumber) {
     StackerMessage message = new StackerMessage();
     message.takeFromTheCell(cellNumber);
     StackerCommand command = new StackerCommand();
