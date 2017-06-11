@@ -7,7 +7,6 @@ class Conveyor(Websocket):
     def __init__(self, wsId, wsToken):
         super().__init__(wsId, wsToken)
         self.__COMMAND_MESSAGE = '1636660af8dbb0b49055'
-        self.__PROGRAM_MESSAGE = 'd4035b0ae585f9ef4357'
         self.__SUCCESS_STATUS = 0
         self.__ERROR_STATUS = 1
         self.__TRANSPORT_DURATION = 5

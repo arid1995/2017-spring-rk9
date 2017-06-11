@@ -8,9 +8,9 @@ import ru.bmstu.rk9.database.Database;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import ru.bmstu.rk9.mechanics.models.Machine;
-import ru.bmstu.rk9.mechanics.models.Robot;
-import ru.bmstu.rk9.mechanics.models.Stacker;
+import ru.bmstu.rk9.mechanics.models.devices.Machine;
+import ru.bmstu.rk9.mechanics.models.devices.Robot;
+import ru.bmstu.rk9.mechanics.models.devices.Stacker;
 import ru.bmstu.rk9.mechanics.models.SystemState;
 
 public class SystemStateDao implements Dao<SystemState> {

@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
-import ru.bmstu.rk9.mechanics.models.Machine;
+import ru.bmstu.rk9.mechanics.models.devices.Machine;
 import ru.bmstu.rk9.mechanics.models.Process;
 
 public class MachineDao implements Dao<Machine> {

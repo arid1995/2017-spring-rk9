@@ -1,4 +1,4 @@
-package ru.bmstu.rk9.mechanics.models;
+package ru.bmstu.rk9.mechanics.models.devices;
 
 import java.io.IOException;
 import java.util.logging.Level;

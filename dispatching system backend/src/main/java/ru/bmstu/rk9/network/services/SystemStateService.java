@@ -2,10 +2,10 @@ package ru.bmstu.rk9.network.services;
 
 import org.springframework.stereotype.Service;
 import ru.bmstu.rk9.mechanics.dao.SystemStateDao;
-import ru.bmstu.rk9.mechanics.models.Conveyor;
-import ru.bmstu.rk9.mechanics.models.Machine;
-import ru.bmstu.rk9.mechanics.models.Robot;
-import ru.bmstu.rk9.mechanics.models.Stacker;
+import ru.bmstu.rk9.mechanics.models.devices.Conveyor;
+import ru.bmstu.rk9.mechanics.models.devices.Machine;
+import ru.bmstu.rk9.mechanics.models.devices.Robot;
+import ru.bmstu.rk9.mechanics.models.devices.Stacker;
 import ru.bmstu.rk9.mechanics.models.Stock;
 
 @Service

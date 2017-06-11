@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.mechanics.models;
 
 import java.util.ArrayList;
+import ru.bmstu.rk9.mechanics.models.devices.Machine;
 
 public class Process {
 

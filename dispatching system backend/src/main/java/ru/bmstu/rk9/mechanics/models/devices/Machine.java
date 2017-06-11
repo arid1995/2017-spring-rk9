@@ -1,6 +1,12 @@
-package ru.bmstu.rk9.mechanics.models;
+package ru.bmstu.rk9.mechanics.models.devices;
 
 import java.util.ArrayList;
+import ru.bmstu.rk9.mechanics.commands.MachineCommand;
+import ru.bmstu.rk9.mechanics.commands.MachineProcessCommand;
+import ru.bmstu.rk9.mechanics.commands.messages.MachineMessage;
+import ru.bmstu.rk9.mechanics.commands.messages.MachineProcessMessage;
+import ru.bmstu.rk9.mechanics.models.Billet;
+import ru.bmstu.rk9.mechanics.models.Process;
 
 public class Machine extends Device {
 
@@ -60,14 +66,32 @@ public class Machine extends Device {
   }
 
   public void startProcess(Billet billet) {
-
+    MachineProcessMessage message = new MachineProcessMessage();
+    message.setProgramName(billet.getProcesses().remove(0).getProgramName());
+    MachineProcessCommand command = new MachineProcessCommand(message);
+    sendMessageToDevice(command);
+    transaction = () -> {
+      state = FINISHED;
+    };
   }
 
   private void openCollet() {
-
+    MachineMessage message = new MachineMessage();
+    message.openCollet();
+    MachineCommand command = new MachineCommand(message);
+    sendMessageToDevice(command);
+    transaction = () -> {
+      state = FREE;
+    };
   }
 
   private void closeCollet() {
-
+    MachineMessage message = new MachineMessage();
+    message.closeCollet();
+    MachineCommand command = new MachineCommand(message);
+    sendMessageToDevice(command);
+    transaction = () -> {
+      state = BUSY;
+    };
   }
 }

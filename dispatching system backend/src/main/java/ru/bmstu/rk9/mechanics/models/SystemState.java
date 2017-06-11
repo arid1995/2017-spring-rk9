@@ -2,6 +2,9 @@ package ru.bmstu.rk9.mechanics.models;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import ru.bmstu.rk9.mechanics.models.devices.Machine;
+import ru.bmstu.rk9.mechanics.models.devices.Robot;
+import ru.bmstu.rk9.mechanics.models.devices.Stacker;
 
 public class SystemState {
   private Integer systemStateId;

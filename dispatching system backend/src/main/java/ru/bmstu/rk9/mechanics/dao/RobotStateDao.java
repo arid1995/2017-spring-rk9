@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.bmstu.rk9.database.Database;
-import ru.bmstu.rk9.mechanics.models.Robot;
+import ru.bmstu.rk9.mechanics.models.devices.Robot;
 
 public class RobotStateDao implements Dao<Robot> {
   public ArrayList<Robot> getByStateId(int id) {

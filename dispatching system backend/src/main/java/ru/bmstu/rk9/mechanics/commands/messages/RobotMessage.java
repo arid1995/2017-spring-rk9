@@ -16,7 +16,7 @@ public class RobotMessage extends Message {
     action = 0;
   }
 
-  public void putBilletOnMachine() {
+  public void putBilletInMachine() {
     action = 1;
   }
 
