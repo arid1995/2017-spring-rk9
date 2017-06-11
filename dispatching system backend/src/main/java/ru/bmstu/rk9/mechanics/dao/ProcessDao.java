@@ -71,12 +71,25 @@ public class ProcessDao implements Dao<Process> {
     return processes;
   }
 
-  public HashMap<String, Process> getByDetailId(int detailId) {
+  private ArrayList<Process> fillProcessesFromResultSetAsArray(ResultSet result)
+      throws SQLException {
+    ArrayList<Process> processes = new ArrayList<>();
+    while (result.next()) {
+      String programName = result.getString("program_name");
+      Integer processId = result.getInt("process_id");
+      Integer duration = result.getInt("duration");
+
+      processes.add(new Process(processId, programName, duration));
+    }
+    return processes;
+  }
+
+  public ArrayList<Process> getByDetailId(int detailId) {
     try {
       return Database.select("SELECT * FROM process AS p INNER JOIN process_to_detail AS ptd"
               + " ON p.process_id=ptd.process_id WHERE"
               + " ptd.detail_id=" + detailId + " ORDER BY ptd.process_order ASC",
-          this::fillProcessesFromResultSet);
+          this::fillProcessesFromResultSetAsArray);
     } catch (SQLException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, e.getMessage(), e);
       return null;

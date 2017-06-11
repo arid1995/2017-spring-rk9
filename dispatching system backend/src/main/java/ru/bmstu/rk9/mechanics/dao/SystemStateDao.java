@@ -12,6 +12,7 @@ import ru.bmstu.rk9.mechanics.models.devices.Machine;
 import ru.bmstu.rk9.mechanics.models.devices.Robot;
 import ru.bmstu.rk9.mechanics.models.devices.Stacker;
 import ru.bmstu.rk9.mechanics.models.SystemState;
+import ru.bmstu.rk9.utils.DateUtils;
 
 public class SystemStateDao implements Dao<SystemState> {
 
@@ -20,14 +21,13 @@ public class SystemStateDao implements Dao<SystemState> {
   @Override
   public int persist(SystemState state) {
     StringBuilder query = new StringBuilder();
-    Timestamp created = new Timestamp(System.currentTimeMillis());
     int newId;
 
     try {
       newId = Utils.getNextId("state_log", "state_id", idGenerator);
       query.append("INSERT INTO state_log (state_id, created, stacker_state) VALUES(")
           .append(newId).append(",")
-          .append(created.getTime()).append(",")
+          .append(DateUtils.getCurrentTimestamp()).append(",")
           .append(state.getStacker().getState()).append(")");
       Database.update(query.toString());
       state.setSystemStateId(newId);
@@ -40,12 +40,12 @@ public class SystemStateDao implements Dao<SystemState> {
     MachineStateDao machineStateDao = new MachineStateDao();
 
     for (Robot robot : state.getRobotStates()) {
-      robotStateDao.persist(robot);
       robot.setStateId(newId);
+      robotStateDao.persist(robot);
     }
     for (Machine machine : state.getMachineStates()) {
-      machineStateDao.persist(machine);
       machine.setStateId(newId);
+      machineStateDao.persist(machine);
     }
     return newId;
   }

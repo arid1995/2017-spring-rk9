@@ -10,11 +10,12 @@ import ru.bmstu.rk9.mechanics.models.devices.Robot;
 public class RobotStateDao implements Dao<Robot> {
   public ArrayList<Robot> getByStateId(int id) {
     try {
-      return Database.select("SELECT r.robot_id rid, rs.robot_state rsrs, d.device_id ddi,"
-          + " d.device_string_id ddsid, device.device_name ddn,"
+      String query = "SELECT r.robot_id rid, rs.robot_state rsrs, d.device_id ddi,"
+          + " d.device_string_id ddsid, d.device_name ddn"
           + " FROM robot AS r INNER JOIN robot_state AS rs"
-          + " ON robot_state.id=robot.id INNER JOIN device AS d"
-          + " ON robot.device_id=device.device_id WHERE robot_state.state_id=" + id, (result) -> {
+          + " ON rs.robot_id=r.robot_id INNER JOIN device AS d"
+          + " ON r.device_id=d.device_id WHERE rs.state_id=" + id;
+      return Database.select(query, (result) -> {
         ArrayList<Robot> robots = new ArrayList<>();
         while (result.next()) {
           int robotId = result.getInt("rid");

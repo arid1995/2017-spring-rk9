@@ -13,11 +13,12 @@ public class MachineStateDao implements Dao<Machine> {
 
   public ArrayList<Machine> getByStateId(int id) {
     try {
-      return Database.select("SELECT m.machine_id mid, m.machine_type mmt,"
+      String query = "SELECT m.machine_id mid, m.machine_type mmt,"
           + " ms.machine_state msms, d.device_id ddi, d.device_string_id ddsid, d.device_name ddn"
-          + " FROM machine AS m INNER JOIN machine_state AS msms"
-          + " ON ms.id=m.id INNER JOIN device AS d"
-          + " ON m.device_id=d.device_id WHERE ms.state_id=" + id, (result) -> {
+          + " FROM machine AS m INNER JOIN machine_state AS ms"
+          + " ON ms.machine_id=m.machine_id INNER JOIN device AS d"
+          + " ON m.device_id=d.device_id WHERE ms.state_id=" + id;
+      return Database.select(query, (result) -> {
         ArrayList<Machine> machines = new ArrayList<>();
         while (result.next()) {
           int machineId = result.getInt("mid");

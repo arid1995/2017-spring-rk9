@@ -148,46 +148,52 @@ public class Dispatcher {
     System.out.println(message.getDeviceId());
   }
 
-  //TODO: find a way to continue squence
+  //TODO: find a way to continue sequence
   private void generateNextCommand() {
     if (!isWorking) {
       return;
     }
     stacker.putPalletOnConveyor(stock.getNextPallet());
-    Command<Message> command = determineCommandByProductionRules();
+    determineCommandByProductionRules();
   }
 
-  private Command<Message> determineCommandByProductionRules() {
+  private void determineCommandByProductionRules() {
     Command<Message> command = null;
 
     ArrayList<Machine> finishedMachines = getMachinesWithState(Machine.FINISHED);
     ArrayList<Machine> freeMachines = getMachinesWithState(Machine.FREE);
-
+    System.out.println("---------------BEGIN---------------");
     //Are there finished machines
     if (!finishedMachines.isEmpty()) {
+      System.out.println("FINISHED MACHINE RULE");
       Machine finishedMachine = finishedMachines.remove(0);
       Robot robot = getRobotIfFree(finishedMachine.getMachineId());
       if (robot != null) {
+        System.out.println("FREE ROBOT RULE");
         finishedMachine.openCollet();
         //TODO: what's next???
       }
     } else {
       //Are there free machines
       if (!freeMachines.isEmpty()) {
+        System.out.println("FREE MACHINE RULE");
         //Are there pallets that free machine can handle
         if (conveyor.hasPallets()) {
           Pair<Machine, Pallet> suitablePallet = getSuitablePalletOnConveyor(freeMachines);
           if (suitablePallet != null) {
+            System.out.println("PALETS ON CONVEYOR RULE");
             Pallet pallet = suitablePallet.getValue();
             Machine machine = suitablePallet.getKey();
             Robot robot = getRobotIfFree(machine.getMachineId());
             //Is robot free
             if (robot != null) {
+              System.out.println("FREE ROBOT RULE");
               //TODO: what's next???
               conveyor.movePallet(pallet.getId(), machine.getMachineId());
             }
           }
         } else {
+          System.out.println("PALLET IN STOCK RULE");
           Integer cellNumber = getSuitablePalletInStock(freeMachines);
           if (cellNumber != null) {
             stacker.takeFromTheCell(cellNumber);
@@ -195,7 +201,7 @@ public class Dispatcher {
         }
       }
     }
-    return command;
+    System.out.println("---------------END---------------");
   }
 
   private ArrayList<Machine> getMachinesWithState(Integer state) {
