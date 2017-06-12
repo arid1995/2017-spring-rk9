@@ -61,4 +61,14 @@ public class Pallet {
   public int removeFromOrder() {
     return order.takeBillets(currentCount);
   }
+
+  public void takeBillet(Billet billet) {
+    billets.put(billet.getPalletPosition(), billet);
+  }
+
+  public Billet yieldBillet(int position) {
+    Billet billet = billets.remove(position);
+    billet.setPalletPosition(position);
+    return billet;
+  }
 }

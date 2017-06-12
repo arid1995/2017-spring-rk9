@@ -19,11 +19,10 @@ public class Conveyor extends Device {
   }
 
   //TODO: Think about multiple requests for move
-  public void transportPallet(Pallet pallet, Integer key, Runnable nextAction) {
+  public void transportPallet(Pallet pallet, Integer key) {
     ConveyorMessage message = new ConveyorMessage();
     message.movePalletToKey(pallet.getId(), key);
     ConveyorCommand command = new ConveyorCommand(message);
-    transaction = nextAction;
   }
 
   public void putPallet(Pallet pallet) {

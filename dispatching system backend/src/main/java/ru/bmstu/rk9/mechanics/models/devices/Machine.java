@@ -21,6 +21,7 @@ public class Machine extends Device {
   private Integer machineId;
   private String machineType;
   private HashMap<String, Process> technicalProcesses = new HashMap<>();
+  private Billet processedBillet = null;
 
   public Machine(String deviceStringId, String deviceName, String machineType) {
     super(deviceStringId, deviceName);
@@ -93,6 +94,16 @@ public class Machine extends Device {
     transaction = () -> {
       state = BUSY;
     };
+  }
+
+  public void takeBillet(Billet billet) {
+    processedBillet = billet;
+  }
+
+  public Billet yieldBillet() {
+    Billet billet = processedBillet;
+    processedBillet = null;
+    return billet;
   }
 
   public boolean hasProgram(String name) {

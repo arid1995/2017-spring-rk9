@@ -6,6 +6,7 @@ import java.util.LinkedList;
 public class Billet {
   private LinkedList<Process> processes;
   private Integer palletId;
+  private Integer palletPosition;
 
   public Billet(Detail detail, Integer palletId) {
     this.processes = new LinkedList<>(detail.getProcesses());
@@ -26,5 +27,13 @@ public class Billet {
 
   public Process getNextProcess() {
     return processes.peek();
+  }
+
+  public Integer getPalletPosition() {
+    return palletPosition;
+  }
+
+  public void setPalletPosition(Integer palletPosition) {
+    this.palletPosition = palletPosition;
   }
 }

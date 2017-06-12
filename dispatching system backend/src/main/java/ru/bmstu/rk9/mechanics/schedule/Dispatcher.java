@@ -1,6 +1,7 @@
 package ru.bmstu.rk9.mechanics.schedule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.util.Pair;
 import org.springframework.web.socket.WebSocketSession;
 import ru.bmstu.rk9.mechanics.commands.Command;
@@ -23,6 +24,7 @@ public class Dispatcher {
   private boolean isWorking = false;
   private final ArrayList<Machine> machines;
   private final ArrayList<Robot> robots;
+  private final HashMap<Integer, Pallet> pallets = new HashMap<>();
   private final Conveyor conveyor;
   private final Stacker stacker;
   private final Stock stock;
@@ -131,6 +133,7 @@ public class Dispatcher {
     conveyor.executeTransaction();
     systemStateDao.persist(systemState);
     System.out.println(message.getDeviceId());
+    generateNextCommand();
   }
 
   public void start() {
@@ -146,6 +149,7 @@ public class Dispatcher {
     stacker.executeTransaction();
     systemStateDao.persist(systemState);
     System.out.println(message.getDeviceId());
+    generateNextCommand();
   }
 
   //TODO: find a way to continue sequence
@@ -153,7 +157,6 @@ public class Dispatcher {
     if (!isWorking) {
       return;
     }
-    stacker.putPalletOnConveyor(stock.getNextPallet());
     determineCommandByProductionRules();
   }
 
@@ -196,7 +199,7 @@ public class Dispatcher {
           System.out.println("PALLET IN STOCK RULE");
           Integer cellNumber = getSuitablePalletInStock(freeMachines);
           if (cellNumber != null) {
-            stacker.takeFromTheCell(cellNumber);
+            stacker.takeFromTheCell(cellNumber, stock);
           }
         }
       }

@@ -6,11 +6,17 @@ import ru.bmstu.rk9.mechanics.commands.messages.RobotMessage;
 import ru.bmstu.rk9.mechanics.commands.messages.StackerMessage;
 import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Pallet;
+import ru.bmstu.rk9.mechanics.models.Stock;
 
 public class Stacker extends Device {
+  private Pallet pallet = null;
+
+  public static final int FREE = 0;
+  public static final int BUSY = 1;
 
   public Stacker(Integer deviceId, Integer state) {
     super(deviceId, "f4812d51-d523-4b9b-a1a7-bdc501d37104", "stacker");
+    state = FREE;
   }
 
   public void putPalletOnConveyor(Pallet pallet) {
@@ -29,13 +35,15 @@ public class Stacker extends Device {
     };
   }
 
-  public void takeFromTheCell(int cellNumber) {
+  public void takeFromTheCell(int cellNumber, Stock stock) {
     StackerMessage message = new StackerMessage();
     message.takeFromTheCell(cellNumber);
     StackerCommand command = new StackerCommand();
     sendMessageToDevice(command);
+    state = BUSY;
     transaction = () -> {
-      //TODO: think what to do after
+      pallet = stock.getPalletAt(cellNumber);
+      state = FREE;
     };
   }
 }

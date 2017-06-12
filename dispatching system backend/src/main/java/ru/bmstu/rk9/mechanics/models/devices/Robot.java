@@ -2,6 +2,7 @@ package ru.bmstu.rk9.mechanics.models.devices;
 
 import ru.bmstu.rk9.mechanics.commands.RobotCommand;
 import ru.bmstu.rk9.mechanics.commands.messages.RobotMessage;
+import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Pallet;
 
 public class Robot extends Device {
@@ -9,6 +10,7 @@ public class Robot extends Device {
   public static final int FREE = 0;
   public static final int BUSY = 1;
   private Integer robotId;
+  private Billet takenBillet;
 
   public Robot(String deviceStringId, String deviceName) {
     super(deviceStringId, deviceName);
@@ -37,9 +39,11 @@ public class Robot extends Device {
     RobotMessage message = new RobotMessage();
     message.putBilletInMachine();
     RobotCommand command = new RobotCommand(message);
+    state = BUSY;
     sendMessageToDevice(command);
     transaction = () -> {
-      //TODO: think what to do after
+      machine.takeBillet(takenBillet);
+      state = FREE;
     };
   }
 
@@ -48,18 +52,20 @@ public class Robot extends Device {
     message.takeBilletFromMachine();
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
+    state = BUSY;
     transaction = () -> {
-      //TODO: think what to do after
+      takenBillet = machine.yieldBillet();
     };
   }
 
-  public void takeBilletFromPallet(Pallet pallet) {
+  public void takeBilletFromPallet(Pallet pallet, Integer billetPosition) {
     RobotMessage message = new RobotMessage();
     message.takeBilletFromPallet();
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
+    state = BUSY;
     transaction = () -> {
-      //TODO: think what to do after
+      takenBillet = pallet.yieldBillet(billetPosition);
     };
   }
 
@@ -68,8 +74,21 @@ public class Robot extends Device {
     message.putBilletOnPallet();
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
+    state = BUSY;
     transaction = () -> {
-      //TODO: think what to do after
+      state = FREE;
+      pallet.takeBillet(takenBillet);
+      takenBillet = null;
     };
+  }
+
+  public void takeBillet(Billet billet) {
+    takenBillet = billet;
+  }
+
+  public Billet yieldBillet() {
+    Billet billet = takenBillet;
+    takenBillet = null;
+    return billet;
   }
 }
