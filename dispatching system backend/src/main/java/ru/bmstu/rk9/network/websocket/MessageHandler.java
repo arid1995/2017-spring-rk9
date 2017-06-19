@@ -16,7 +16,7 @@ public class MessageHandler extends TextWebSocketHandler {
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-    System.out.println("Closed");
+    System.out.println("КОНЕЦ ПРОГРАММЫ");
   }
 
   @Override

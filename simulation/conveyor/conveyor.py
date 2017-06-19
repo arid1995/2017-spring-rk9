@@ -13,7 +13,7 @@ class Conveyor(Websocket):
 
     def on_message(self, ws, msg):
         message = Message(msg)
-        print(msg + " NEW ONE!!!")
+        print("ПОСТУПИЛА КОМАНДА ДЛЯ КОНВЕЙЕРА: " + msg)
         if hasattr(message, 'messageType') and message.messageType == self.__COMMAND_MESSAGE:
             self.__executeCommand(message)
 
@@ -30,7 +30,7 @@ class Conveyor(Websocket):
         time.sleep(self.__TRANSPORT_DURATION)
         feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
-        print(feedback.toJson())
+        print("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ КОНВЕЙЕРА: " + feedback.toJson())
 
 
 

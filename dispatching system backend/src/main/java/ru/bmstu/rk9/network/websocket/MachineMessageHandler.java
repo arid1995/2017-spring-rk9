@@ -17,10 +17,10 @@ public class MachineMessageHandler extends MessageHandler {
   protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) {
     FeedbackMessageEntity message = null;
     try {
-      message = mapper.readValue(textMessage.toString(), FeedbackMessageEntity.class);
+      message = mapper.readValue(textMessage.getPayload(), FeedbackMessageEntity.class);
     } catch (IOException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
     }
-    taskService.handleRobotMessage(message);
+    taskService.handleMachineMessage(message, textMessage.getPayload());
   }
 }

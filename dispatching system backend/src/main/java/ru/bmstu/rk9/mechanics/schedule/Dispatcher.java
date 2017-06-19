@@ -20,6 +20,9 @@ import ru.bmstu.rk9.mechanics.models.SystemState;
 import ru.bmstu.rk9.network.entities.FeedbackMessage;
 
 public class Dispatcher {
+  private static final int STACKER_SEQUENCE = 0;
+  private static final int MACHINE_LOAD_SEQUENCE = 1;
+  private static final int MACHINE_UNLOAD_SEQUENCE = 2;
 
   private boolean isWorking = false;
   private final ArrayList<Machine> machines;
@@ -30,7 +33,13 @@ public class Dispatcher {
   private final Stock stock;
   private final SystemState systemState;
   private ArrayList<Order> orders = new ArrayList<>();
+  //FUCK THIS!!!
   private boolean isSequenceStarted = false;
+  private int sequenceCounter = 0;
+  private int sequenceDescriptor = 0;
+  private Machine activeMachine = null;
+  private Robot activeRobot = null;
+  //FUCK UNTIL HERE!!!
   Scheduler scheduler = new Scheduler();
 
   private final Dao<SystemState> systemStateDao = new SystemStateDao();
@@ -53,7 +62,7 @@ public class Dispatcher {
     for (Robot robot : robots) {
       if (robot.getDeviceStringId().equals(deviceId)) {
         robot.setSession(session);
-        System.out.println("Attached session for: " + deviceId);
+        System.out.println("Устройство присоединено к модели, ID: " + deviceId);
         return;
       }
     }
@@ -61,20 +70,20 @@ public class Dispatcher {
     for (Machine machine : machines) {
       if (machine.getDeviceStringId().equals(deviceId)) {
         machine.setSession(session);
-        System.out.println("Attached session for: " + deviceId);
+        System.out.println("Устройство присоединено к модели, ID: " + deviceId);
         return;
       }
     }
 
     if (stacker.getDeviceStringId().equals(deviceId)) {
       stacker.setSession(session);
-      System.out.println("Attached session for: " + deviceId);
+      System.out.println("Устройство присоединено к модели, ID: " + deviceId);
       return;
     }
 
     if (conveyor.getDeviceStringId().equals(deviceId)) {
       conveyor.setSession(session);
-      System.out.println("Attached session for: " + deviceId);
+      System.out.println("Устройство присоединено к модели, ID: " + deviceId);
     }
   }
 
@@ -91,12 +100,12 @@ public class Dispatcher {
 
   }
 
-  public void handleMachineMessage(FeedbackMessage message) {
+  public void handleMachineMessage(FeedbackMessage message,  String payload) {
     Machine machine = null;
+    System.out.println("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ СТАНКА: " + payload);
 
     for (Machine value : machines) {
       if (value.getDeviceStringId().equals(message.getDeviceId())) {
-        System.out.println("Message received");
         machine = value;
         break;
       }
@@ -110,12 +119,12 @@ public class Dispatcher {
     generateNextCommand();
   }
 
-  public void handleRobotMessage(FeedbackMessage message) {
+  public void handleRobotMessage(FeedbackMessage message,  String payload) {
     Robot robot = null;
+    System.out.println("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ РОБОТА: " + payload);
 
     for (Robot value : robots) {
       if (value.getDeviceStringId().equals(message.getDeviceId())) {
-        System.out.println("Message received");
         robot = value;
         break;
       }
@@ -129,10 +138,10 @@ public class Dispatcher {
     generateNextCommand();
   }
 
-  public void handleConveyorMessage(FeedbackMessage message) {
+  public void handleConveyorMessage(FeedbackMessage message, String payload) {
     conveyor.executeTransaction();
     systemStateDao.persist(systemState);
-    System.out.println(message.getDeviceId());
+    System.out.println("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ КОНВЕЙЕРА: " + payload);
     generateNextCommand();
   }
 
@@ -145,10 +154,10 @@ public class Dispatcher {
     isWorking = false;
   }
 
-  public void handleStackerMessage(FeedbackMessage message) {
+  public void handleStackerMessage(FeedbackMessage message, String payload) {
     stacker.executeTransaction();
     systemStateDao.persist(systemState);
-    System.out.println(message.getDeviceId());
+    System.out.println("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ ШТАБЕЛЕРА: " + payload);
     generateNextCommand();
   }
 
@@ -157,7 +166,63 @@ public class Dispatcher {
     if (!isWorking) {
       return;
     }
-    determineCommandByProductionRules();
+    if (!isSequenceStarted) {
+      determineCommandByProductionRules();
+      return;
+    }
+    switch (sequenceDescriptor) {
+      case MACHINE_LOAD_SEQUENCE:
+        continueLoadSequence();
+        break;
+      case MACHINE_UNLOAD_SEQUENCE:
+        continueUnloadSequence();
+        break;
+    }
+  }
+
+  private void continueUnloadSequence() {
+    switch (sequenceCounter) {
+      case 1:
+        activeRobot.takeBilletFromMachine(activeMachine);
+        break;
+      case 2:
+        conveyor.movePallet(activeRobot.getBilletsPalletId(), activeRobot.getRobotId());
+        break;
+      case 3: {
+        conveyor.takeBilletOnKey(activeRobot.yieldBillet(), activeRobot.getRobotId());
+        isSequenceStarted = false;
+        sequenceCounter = 0;
+        activeRobot = null;
+        activeMachine = null;
+        generateNextCommand();
+        return;
+      }
+    }
+    sequenceCounter++;
+  }
+
+  private void continueLoadSequence() {
+    switch (sequenceCounter) {
+      case 1:
+        activeRobot.takeBillet(conveyor.yieldBilletOnKey(activeRobot.getRobotId()));
+        break;
+      case 2:
+        activeRobot.putBilletInMachine(activeMachine);
+        break;
+      case 3:
+        activeMachine.closeCollet();
+        break;
+      case 4: {
+        activeMachine.startProcess();
+        isSequenceStarted = false;
+        sequenceCounter = 0;
+        activeRobot = null;
+        activeMachine = null;
+        generateNextCommand();
+        return;
+      }
+    }
+    sequenceCounter++;
   }
 
   private void determineCommandByProductionRules() {
@@ -165,46 +230,55 @@ public class Dispatcher {
 
     ArrayList<Machine> finishedMachines = getMachinesWithState(Machine.FINISHED);
     ArrayList<Machine> freeMachines = getMachinesWithState(Machine.FREE);
-    System.out.println("---------------BEGIN---------------");
+    System.out.println("---------------НАЧАЛО ПРОСМОТРА ПРАВИЛ---------------");
     //Are there finished machines
     if (!finishedMachines.isEmpty()) {
-      System.out.println("FINISHED MACHINE RULE");
+      System.out.println("ЕСТЬ НЕДАВНО ЗАВЕРШИВШИЕ СТАНКИ");
       Machine finishedMachine = finishedMachines.remove(0);
       Robot robot = getRobotIfFree(finishedMachine.getMachineId());
       if (robot != null) {
-        System.out.println("FREE ROBOT RULE");
+        System.out.println("ЕСТЬ СВОБОДНЫЕ РОБОТЫ");
         finishedMachine.openCollet();
-        //TODO: what's next???
+        isSequenceStarted = true;
+        sequenceDescriptor = MACHINE_UNLOAD_SEQUENCE;
+        sequenceCounter = 1;
+        activeMachine = finishedMachine;
+        activeRobot = robot;
       }
     } else {
       //Are there free machines
       if (!freeMachines.isEmpty()) {
-        System.out.println("FREE MACHINE RULE");
+        System.out.println("ЕСТЬ СВОБОДНЫЕ СТАНКИ");
         //Are there pallets that free machine can handle
         if (conveyor.hasPallets()) {
           Pair<Machine, Pallet> suitablePallet = getSuitablePalletOnConveyor(freeMachines);
           if (suitablePallet != null) {
-            System.out.println("PALETS ON CONVEYOR RULE");
+            System.out.println("ЕСТЬ ПАЛЛЕТЫ НА КОНВЕЙЕРЕ");
             Pallet pallet = suitablePallet.getValue();
             Machine machine = suitablePallet.getKey();
             Robot robot = getRobotIfFree(machine.getMachineId());
             //Is robot free
             if (robot != null) {
-              System.out.println("FREE ROBOT RULE");
-              //TODO: what's next???
-              conveyor.movePallet(pallet.getId(), machine.getMachineId());
+              System.out.println("ЕСТЬ СВОБОДНЫЕ РОБОТЫ");
+              conveyor.movePallet(pallet.getId(), robot.getRobotId());
+              isSequenceStarted = true;
+              sequenceDescriptor = MACHINE_LOAD_SEQUENCE;
+              sequenceCounter = 1;
+              activeMachine = machine;
+              activeRobot = robot;
             }
           }
         } else {
-          System.out.println("PALLET IN STOCK RULE");
+          System.out.println("ЕСТЬ ПАЛЛЕТЫ НА СКЛАДЕ");
           Integer cellNumber = getSuitablePalletInStock(freeMachines);
           if (cellNumber != null) {
             stacker.takeFromTheCell(cellNumber, stock);
+            conveyor.takePallet(stacker.yieldPallet());
           }
         }
       }
     }
-    System.out.println("---------------END---------------");
+    System.out.println("---------------КОНЕЦ ПРОСМОТРА ПРАВИЛ---------------");
   }
 
   private ArrayList<Machine> getMachinesWithState(Integer state) {
@@ -241,7 +315,7 @@ public class Dispatcher {
       Integer palletNumber = null;
       palletNumber = stock.findMatchingPalletCell(machine);
       if (palletNumber != null) {
-        return 0;
+        return palletNumber;
       }
     }
     return null;

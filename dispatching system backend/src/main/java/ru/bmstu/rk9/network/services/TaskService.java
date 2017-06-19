@@ -24,27 +24,27 @@ public class TaskService {
     return dispatcher.getOrders();
   }
 
-  public void handleMachineMessage(FeedbackMessageEntity messageEntity) {
+  public void handleMachineMessage(FeedbackMessageEntity messageEntity, String payload) {
     for (FeedbackMessage message : messageEntity.getMessages()) {
-      dispatcher.handleMachineMessage(message);
+      dispatcher.handleMachineMessage(message, payload);
     }
   }
 
-  public void handleRobotMessage(FeedbackMessageEntity messageEntity) {
+  public void handleRobotMessage(FeedbackMessageEntity messageEntity, String payload) {
     for (FeedbackMessage message : messageEntity.getMessages()) {
-      dispatcher.handleRobotMessage(message);
+      dispatcher.handleRobotMessage(message, payload);
     }
   }
 
-  public void handleStackerMessage(FeedbackMessageEntity messageEntity) {
+  public void handleStackerMessage(FeedbackMessageEntity messageEntity, String payload) {
     for (FeedbackMessage message : messageEntity.getMessages()) {
-      dispatcher.handleStackerMessage(message);
+      dispatcher.handleStackerMessage(message, payload);
     }
   }
 
-  public void handleConveyorMessage(FeedbackMessageEntity messageEntity) {
+  public void handleConveyorMessage(FeedbackMessageEntity messageEntity, String payload) {
     for (FeedbackMessage message : messageEntity.getMessages()) {
-      dispatcher.handleConveyorMessage(message);
+      dispatcher.handleConveyorMessage(message, payload);
     }
   }
 

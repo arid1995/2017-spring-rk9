@@ -16,7 +16,7 @@ class Robot(Websocket):
 
     def on_message(self, ws, msg):
         message = Message(msg)
-        print(msg + " NEW ONE!!!")
+        print("ПОСТУПИЛА КОМАНДА ДЛЯ РОБОТА: " + msg)
         if hasattr(message, 'messageType'):
             self.__executeCommand(message)
 
@@ -38,6 +38,6 @@ class Robot(Websocket):
             3: lambda: time.sleep(self.__PATH_DURATION)
         }
         switcher[action]()
-        feedback = FeedbackMessage(self.__SUCCESS_STATUS)
+        feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
-        print(feedback.toJson())
+        print("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ РОБОТА: " + feedback.toJson())

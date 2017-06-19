@@ -66,9 +66,9 @@ public class Machine extends Device {
     this.technicalProcesses = technicalProcesses;
   }
 
-  public void startProcess(Billet billet) {
+  public void startProcess() {
     MachineProcessMessage message = new MachineProcessMessage();
-    message.setProgramName(billet.popNextProcess().getProgramName());
+    message.setProgramName(processedBillet.popNextProcess().getProgramName());
     MachineProcessCommand command = new MachineProcessCommand(message);
     sendMessageToDevice(command);
     transaction = () -> {

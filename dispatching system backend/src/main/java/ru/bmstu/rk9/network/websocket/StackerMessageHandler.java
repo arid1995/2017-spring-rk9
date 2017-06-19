@@ -24,6 +24,6 @@ public class StackerMessageHandler extends MessageHandler {
     } catch (IOException e) {
       Logger.getLogger(Logger.class.getName()).log(Level.WARNING, e.getMessage(), e);
     }
-    taskService.handleStackerMessage(message);
+    taskService.handleStackerMessage(message, textMessage.getPayload());
   }
 }

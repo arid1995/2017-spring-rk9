@@ -41,8 +41,8 @@ public class Robot extends Device {
     RobotCommand command = new RobotCommand(message);
     state = BUSY;
     sendMessageToDevice(command);
+    machine.takeBillet(takenBillet);
     transaction = () -> {
-      machine.takeBillet(takenBillet);
       state = FREE;
     };
   }
@@ -53,9 +53,7 @@ public class Robot extends Device {
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
     state = BUSY;
-    transaction = () -> {
-      takenBillet = machine.yieldBillet();
-    };
+    takenBillet = machine.yieldBillet();
   }
 
   public void takeBilletFromPallet(Pallet pallet, Integer billetPosition) {
@@ -64,9 +62,7 @@ public class Robot extends Device {
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
     state = BUSY;
-    transaction = () -> {
-      takenBillet = pallet.yieldBillet(billetPosition);
-    };
+    takenBillet = pallet.yieldBillet(billetPosition);
   }
 
   public void putBilletOnPallet(Pallet pallet) {
@@ -75,20 +71,29 @@ public class Robot extends Device {
     RobotCommand command = new RobotCommand(message);
     sendMessageToDevice(command);
     state = BUSY;
+    pallet.takeBillet(takenBillet);
+    takenBillet = null;
     transaction = () -> {
       state = FREE;
-      pallet.takeBillet(takenBillet);
-      takenBillet = null;
     };
   }
 
   public void takeBillet(Billet billet) {
+    RobotMessage message = new RobotMessage();
+    message.takeBilletFromPallet();
+    RobotCommand command = new RobotCommand(message);
+    sendMessageToDevice(command);
     takenBillet = billet;
+    state = BUSY;
   }
 
   public Billet yieldBillet() {
     Billet billet = takenBillet;
     takenBillet = null;
     return billet;
+  }
+
+  public int getBilletsPalletId() {
+    return takenBillet.getPalletId();
   }
 }

@@ -1,10 +1,7 @@
 package ru.bmstu.rk9.mechanics.models.devices;
 
-import ru.bmstu.rk9.mechanics.commands.RobotCommand;
 import ru.bmstu.rk9.mechanics.commands.StackerCommand;
-import ru.bmstu.rk9.mechanics.commands.messages.RobotMessage;
 import ru.bmstu.rk9.mechanics.commands.messages.StackerMessage;
-import ru.bmstu.rk9.mechanics.models.Billet;
 import ru.bmstu.rk9.mechanics.models.Pallet;
 import ru.bmstu.rk9.mechanics.models.Stock;
 
@@ -30,8 +27,9 @@ public class Stacker extends Device {
     message.putInTheCell(cellNumber);
     StackerCommand command = new StackerCommand();
     sendMessageToDevice(command);
+    state = BUSY;
     transaction = () -> {
-      //TODO: think what to do after
+      state = FREE;
     };
   }
 
@@ -40,10 +38,16 @@ public class Stacker extends Device {
     message.takeFromTheCell(cellNumber);
     StackerCommand command = new StackerCommand();
     sendMessageToDevice(command);
+    pallet = stock.yieldPalletAt(cellNumber);
     state = BUSY;
     transaction = () -> {
-      pallet = stock.getPalletAt(cellNumber);
       state = FREE;
     };
+  }
+
+  public Pallet yieldPallet() {
+    Pallet pallet = this.pallet;
+    this.pallet = null;
+    return pallet;
   }
 }

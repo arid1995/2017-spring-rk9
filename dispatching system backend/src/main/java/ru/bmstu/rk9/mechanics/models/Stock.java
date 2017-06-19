@@ -27,9 +27,9 @@ public class Stock {
     return pallets.size();
   }
 
-  public Pallet getPalletAt(int index) {
+  public Pallet yieldPalletAt(int index) {
     if (index < pallets.size()) {
-      return pallets.get(index);
+      return pallets.remove(index);
     }
     return null;
   }

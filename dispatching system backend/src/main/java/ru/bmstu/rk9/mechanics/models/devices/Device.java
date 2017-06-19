@@ -39,7 +39,7 @@ public abstract class Device {
     try {
       if (session != null) {
         session.sendMessage(new TextMessage(command.toJson()));
-        System.out.println(command.toJson());
+        System.out.println("КОМАНДА ДЛЯ УСТРОЙСТВА: " + command.toJson());
         return;
       }
       Logger.getLogger(Logger.class.getName())

@@ -12,7 +12,7 @@ public class Scheduler {
     try {
       for (Order order : orders) {
         for (int i = 0; i < order.getRemained(); i += 2) {
-          Pallet pallet = stock.getPalletAt(i / 2);
+          Pallet pallet = stock.yieldPalletAt(i / 2);
           if (pallet == null) {
             throw new IndexOutOfBoundsException();
           }

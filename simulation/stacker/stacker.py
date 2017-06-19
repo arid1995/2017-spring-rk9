@@ -13,7 +13,7 @@ class Stacker(Websocket):
 
     def on_message(self, ws, msg):
         message = Message(msg)
-        print(msg + " NEW ONE!!!")
+        print("ПОСТУПИЛА КОМАНДА ДЛЯ ШТАБЕЛЕРА: " + msg)
         if hasattr(message, 'messageType') and message.messageType == self.__COMMAND_MESSAGE:
             self.__executeCommand(message)
 
@@ -30,4 +30,4 @@ class Stacker(Websocket):
         time.sleep(self.__TRANSPORT_DURATION)
         feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
-        print(feedback.toJson())
+        print("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ ШТАБЕЛЕРА: " + feedback.toJson())

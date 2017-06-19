@@ -15,7 +15,7 @@ class Machine(Websocket):
 
     def on_message(self, ws, msg):
         message = Message(msg)
-        print(msg + " NEW ONE!!!")
+        print("ПОСТУПИЛА КОМАНДА ДЛЯ СТАНКА: " + msg)
         if hasattr(message, 'messageType') and message.messageType == self.__COMMAND_MESSAGE:
             self.__executeCommand(message)
         elif hasattr(message, 'messageType'):
@@ -34,10 +34,10 @@ class Machine(Websocket):
         time.sleep(self.__COLLET_OPEN_CLOSE_DURATION)
         feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
-        print(feedback.toJson())
+        print("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ СТАНКА: " + feedback.toJson())
 
     def __runProgram(self, message):
         time.sleep(self.__PROGRAM_EXECUTION_DURATION)
         feedback = FeedbackMessage(self.__SUCCESS_STATUS, self.wsId)
         self.ws.send(feedback.toJson())
-        print(feedback.toJson())
+        print("СООБЩЕНИЕ ОБРАТНОЙ СВЯЗИ СТАНКА: " + feedback.toJson())

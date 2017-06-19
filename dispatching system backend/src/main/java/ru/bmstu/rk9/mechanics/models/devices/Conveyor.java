@@ -15,20 +15,40 @@ public class Conveyor extends Device {
   }
 
   public void movePallet(int palletId, int keyNumber) {
-    Pallet pallet;
-  }
-
-  //TODO: Think about multiple requests for move
-  public void transportPallet(Pallet pallet, Integer key) {
+    Pallet pallet = pallets.get(palletId);
     ConveyorMessage message = new ConveyorMessage();
-    message.movePalletToKey(pallet.getId(), key);
+    message.movePalletToKey(palletId, keyNumber);
     ConveyorCommand command = new ConveyorCommand(message);
+    sendMessageToDevice(command);
+    pallet.setKey(keyNumber);
+    return;
   }
 
-  public void putPallet(Pallet pallet) {
-    transaction = () -> {
+  public void takeBilletOnKey(Billet billet, int key) {
+    for (HashMap.Entry<Integer, Pallet> palletEntry : pallets.entrySet()) {
+      if (palletEntry.getValue().getKey() == key) {
+        palletEntry.getValue().takeBillet(billet);
+        return;
+      }
+    }
+  }
+
+  public Billet yieldBilletOnKey(int key) {
+    for (HashMap.Entry<Integer, Pallet> palletEntry : pallets.entrySet()) {
+      if (palletEntry.getValue().getKey() == key) {
+        //TODO: FUCK THAT REAL HARD!!!
+        Billet billet = palletEntry.getValue().yieldBillet(0);
+        if (billet == null) {
+          return palletEntry.getValue().yieldBillet(1);
+        }
+        return billet;
+      }
+    }
+    return null;
+  }
+
+  public void takePallet(Pallet pallet) {
       pallets.put(pallet.getId(), pallet);
-    };
   }
 
   public boolean hasPallets() {
@@ -46,9 +66,5 @@ public class Conveyor extends Device {
       }
     }
     return null;
-  }
-
-  public void takePallet() {
-
   }
 }

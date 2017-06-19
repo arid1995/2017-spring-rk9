@@ -25,4 +25,4 @@ if __name__ == '__main__':
     latheRobot = Robot(LATHE_ROBOT_ID, LATHE_ROBOT_TOKEN)
     stacker = Stacker(STACKER_ID, STACKER_TOKEN)
     conveyor = Conveyor(CONVEYOR_ID, CONVEYOR_TOKEN)
-    print("launched")
+    print("-------ЗАПУСК ПРОГРАММЫ СИМУЛЯЦИИ--------")

@@ -28,7 +28,7 @@ class Websocket(metaclass=ABCMeta):
         print(msg)
 
     def on_error(self, ws, error):
-        print(error)
+        print("")
 
     def on_close(self, ws):
         self.ws.close()
